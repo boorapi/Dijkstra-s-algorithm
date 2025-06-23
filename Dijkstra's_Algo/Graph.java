@@ -1,0 +1,84 @@
+
+/**
+ * Write a description of class Load_flie here.
+ *
+ * @author (your name)
+ * @version (a version number or a date)
+ */
+import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+public class Graph{
+    private ArrayList<String> nodesArray = new ArrayList<String>();// to store node name and location
+    private ArrayList<String> edgesArray = new ArrayList<String>();// to store edges infomation
+    
+    private int nodesAmount;//amout of all the nodes from the file
+    private int edgesAmount;//amout of all the adges from the file
+    
+    private ArrayList<String> nodesName = new ArrayList<String>();
+    private ArrayList<Integer> nodesX = new ArrayList<Integer>();
+    private ArrayList<Integer> nodesY = new ArrayList<Integer>();
+    
+    public void load_data(){
+        File dataFile = new File("simulation_data.csv"); // create new file object called data file.
+        try{
+            Scanner readFile = new Scanner(dataFile);// use Scanner to read the data file
+            String x = readFile.nextLine();
+            this.nodesAmount = Integer.parseInt(x);            
+            for(int i=0; i<nodesAmount; i++){
+                nodesArray.add(readFile.nextLine());
+            }
+            
+            String y = readFile.nextLine();
+            this.edgesAmount = Integer.parseInt(y);
+            for(int i=0; i<edgesAmount; i++){
+                edgesArray.add(readFile.nextLine());
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        
+        for(String n : nodesArray){
+            String[] value = n.split(",");
+            String name = value[0];
+            nodesName.add(name);
+            String X = value[1];
+            String Y = value[2];
+            int x = Integer.parseInt(X);
+            int y = Integer.parseInt(Y);
+            nodesX.add(x);
+            nodesY.add(y);
+        }
+    }
+    
+    public void Graph(){
+        
+    }
+    
+    public int nodesAmount(){
+        return nodesAmount;
+    }
+    
+    public int edgesAmount(){
+        return edgesAmount;
+    }
+    
+    public ArrayList<Integer> nodesX(){
+        return nodesX;
+    }
+    
+    public ArrayList<Integer> nodesY(){
+        return nodesY;
+    }
+    
+    public String nodeName(){
+        for(String n: nodesArray){
+            return n;
+        }
+        return null;
+    }
+    
+    
+
+}

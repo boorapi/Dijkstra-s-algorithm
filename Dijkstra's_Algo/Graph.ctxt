@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=Graph
+comment1.params=
+comment1.target=void\ load_data()
+comment2.params=
+comment2.target=void\ Graph()
+comment3.params=
+comment3.target=int\ nodesAmount()
+comment4.params=
+comment4.target=int\ edgesAmount()
+comment5.params=
+comment5.target=java.util.ArrayList\ nodesX()
+comment6.params=
+comment6.target=java.util.ArrayList\ nodesY()
+comment7.params=
+comment7.target=java.lang.String\ nodeName()
+numComments=8
