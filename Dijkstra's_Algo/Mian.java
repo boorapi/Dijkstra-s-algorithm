@@ -8,6 +8,7 @@
 public class Mian
 {
     public static void main(String args[]){
+        GUI Screen = new GUI();
         
     }
 }
