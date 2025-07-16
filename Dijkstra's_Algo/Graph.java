@@ -16,9 +16,9 @@ public class Graph{
     private int nodesAmount;//amout of all the nodes from the file
     private int edgesAmount;//amout of all the adges from the file
     
-    private ArrayList<String> nodesName = new ArrayList<String>();
-    private ArrayList<Integer> nodesX = new ArrayList<Integer>();
-    private ArrayList<Integer> nodesY = new ArrayList<Integer>();
+    private ArrayList<String> nodesName = new ArrayList<String>();// to store names of the nodes
+    private ArrayList<Integer> nodesX = new ArrayList<Integer>();// to store x coordinates of the nodes
+    private ArrayList<Integer> nodesY = new ArrayList<Integer>();// to store y coordinates of the nodes
     
     public void load_data(){
         File dataFile = new File("simulation_data.csv"); // create new file object called data file.
@@ -38,7 +38,7 @@ public class Graph{
         }catch (IOException e){
             e.printStackTrace();
         }
-        
+        //add nodes' name and location to their own ArrayList
         for(String n : nodesArray){
             String[] value = n.split(",");
             String name = value[0];
@@ -64,11 +64,11 @@ public class Graph{
         return edgesAmount;
     }
     
-    public ArrayList<Integer> nodesX(){
+    public ArrayList<Integer> getNodesX(){
         return nodesX;
     }
     
-    public ArrayList<Integer> nodesY(){
+    public ArrayList<Integer> getNodesY(){
         return nodesY;
     }
     
