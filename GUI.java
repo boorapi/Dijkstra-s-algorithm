@@ -19,14 +19,15 @@ public class GUI extends JFrame implements ActionListener
 
     JMenuBar menuBar;// menu bar
     JMenu optionsMenu;// each menu
-    Canvas myGraphic;// canvas to draw on
     
     JMenuItem helpItem;// element in the menu
     JMenuItem exitItem;
 
     int width = 1800;// width of the window/jframe
     int height = 980;// height of the window/jframe
-    int radius = 10;// radius of the node
+
+    GraphicPanel myGraphic;
+
 
     public void actionPerformed(ActionEvent e){
         String cmd = e.getActionCommand();
@@ -52,46 +53,20 @@ public class GUI extends JFrame implements ActionListener
         box.setTitle("How does it work?");
     }
 
-    //This method will draw the node on the canvas using the x and y coordinates
-    public void drawNode(Graphics g, int x, int y){
-        g.setColor(new Color(50, 143, 168));// set the color of the node
-        g.fillOval(x-radius, y-radius, radius*2, radius*2);//draw the node
-         
-        }
 
-    public void paint(Graphics g){
-        super.paint(g);// call the paint method to paint
-
-        Graph graph = new Graph();// create a new graph object
-        graph.load_data();// load the data from the file
-        ArrayList<Integer> nodesX = graph.getNodesX();// get the x coordinates of the nodes
-        ArrayList<Integer> nodesY = graph.getNodesY();// get the y coordinates of the
-
-        for(int i=0; i<graph.nodesAmount(); i++){
-            int x = nodesX.get(i);// get the x coordinate of the node
-            int y = nodesY.get(i);// get the y coordinate of the node
-            drawNode(g, x, y);// draw the node on the canvas
-        }
-    }
 
     public GUI(){
 
         setTitle("Dijkstra's Algorithm");// set the title of the window
         this.getContentPane().setPreferredSize(new Dimension(width, height));//Set the lenght and width of the window
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);//Exit when close the window
-
-        JPanel panel = new JPanel();// create a new panel
-        panel.setPreferredSize(new Dimension(width, height));
-        myGraphic = new Canvas();// create a new canvas
-        panel.add(myGraphic);// add the canvas to the panel
-        //panel.setBackground(Color.black);
-        this.add(panel);// add the panel to the window
-
+        this.myGraphic = new GraphicPanel();//Create a new graphic panel
+        this.getContentPane().add(this.myGraphic, BorderLayout.CENTER);//Add the graphic panel to the center of the window
+        
         //Make the window visible
         this.pack();
         this.toFront();
         this.setVisible(true);
-
         //setup menu bar
         menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);

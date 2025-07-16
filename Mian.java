@@ -9,5 +9,7 @@ public class Mian
 {
     public static void main(String args[]){
         GUI Screen = new GUI();
+        Graph num = new Graph();
+        System.out.println(num.nodesAmount());
     }
 }
