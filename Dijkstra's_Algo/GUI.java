@@ -19,7 +19,7 @@ public class GUI extends JFrame implements ActionListener
 
     JMenuBar menuBar;// menu bar
     JMenu optionsMenu;// each menu
-    Canvas myCanvas;// canvas to draw on
+    Canvas myGraphic;// canvas to draw on
     
     JMenuItem helpItem;// element in the menu
     JMenuItem exitItem;
@@ -82,9 +82,10 @@ public class GUI extends JFrame implements ActionListener
 
         JPanel panel = new JPanel();// create a new panel
         panel.setPreferredSize(new Dimension(width, height));
-        myCanvas = new Canvas();// create a new canvas
-        panel.add(myCanvas);// add the canvas to the panel
-        panel.setBackground(Color.black);
+        myGraphic = new Canvas();// create a new canvas
+        panel.add(myGraphic);// add the canvas to the panel
+        //panel.setBackground(Color.black);
+        this.add(panel);// add the panel to the window
 
         //Make the window visible
         this.pack();
