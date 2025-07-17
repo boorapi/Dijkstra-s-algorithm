@@ -75,11 +75,8 @@ public class Graph{
         return nodesY;
     }
     
-    public String nodeName(){
-        for(String n: nodesArray){
-            return n;
-        }
-        return null;
+    public ArrayList<String> nodesName(){
+        return nodesName;
     }
     
     

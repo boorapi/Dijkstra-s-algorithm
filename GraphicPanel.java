@@ -8,9 +8,12 @@ public class GraphicPanel extends JPanel{
     final int radius = 20;// radius of the node
 
     //This method will draw the node on the canvas using the x and y coordinates
-    public void drawNode(Graphics2D g, int x, int y){
-        g.setColor(new Color(50, 143, 168));// set the color of the node
-        g.fillOval(x-radius, y-radius, radius*2, radius*2);//draw the node
+    public void drawNode(Graphics2D g2d, int x, int y, int number){
+        g2d.setColor(new Color(50, 143, 168));// set the color of the node
+        g2d.fillOval(x-radius, y-radius, radius*2, radius*2);//draw the node
+        g2d.setColor(new Color(32, 38, 77));
+        g2d.setFont(new Font("Arial", Font.BOLD, 14));// set the font of the number inside the node
+        g2d.drawString(number+"", x-4, y+5);// draw the number inside the node)
         }
 
     public void paintComponent(Graphics g){
@@ -25,7 +28,7 @@ public class GraphicPanel extends JPanel{
         for(int i=0; i<graph.nodesAmount(); i++){
             int x = nodesX.get(i);// get the x coordinate of the node
             int y = nodesY.get(i);// get the y coordinate of the node
-            drawNode(g2d, x, y);// draw the node on the canvas
+            drawNode(g2d, x, y, i+1);// draw the node on the canvas
         
     }
     }

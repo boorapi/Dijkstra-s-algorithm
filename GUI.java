@@ -17,12 +17,17 @@ import java.util.ArrayList;
 public class GUI extends JFrame implements ActionListener
 {
 
+    Graph graph = new Graph();// create a new graph object
+
     JMenuBar menuBar;// menu bar
     JMenu optionsMenu;// each menu
     JMenu nodes;//nodes menu
     
     JMenuItem helpItem;// element in the menu
     JMenuItem exitItem;
+
+    //Nodes menu items
+    ArrayList<JMenuItem> nodeItems = new ArrayList<JMenuItem>();// to store all the nodes menu items
 
     int width = 1800;// width of the window/jframe
     int height = 980;// height of the window/jframe
@@ -36,6 +41,15 @@ public class GUI extends JFrame implements ActionListener
             case "help" : createDialogBox("This is how the program works...", false);
                 break;
             case "exit" : System.exit(0);
+                break;
+            case name : // if the action command is a node name
+                for(JMenuItem item : nodeItems){
+                    if(item.getActionCommand().equals(cmd)){
+                        createDialogBox("You have selected node: " + cmd, false);
+                        break;
+                    }
+                }
+                break;
         }
     }
     //This method will create dialog box 
@@ -85,9 +99,19 @@ public class GUI extends JFrame implements ActionListener
         //menu and menu items for nodes
         nodes = new JMenu("Nodes");
         menuBar.add(nodes);
-        for(String name:)
+        //add nodes to the menu
+        graph.load_data();// load the data from the file
+        int nodeNum = 1;
+        for(String name:graph.nodesName()){
+            JMenuItem item = new JMenuItem(name+":  "+nodeNum);
+            item.setActionCommand(name);// set the action command to the name of the node
+            item.setToolTipText("Click to select this node as a source node");// set the tooltip text
+            item.addActionListener(this);//Link item to action listener
+            nodes.add(item);
+            nodeItems.add(item);// add the item to the list of nodes so it can be accessed later (class variable)
+            nodeNum++;
+        }
 
-        
 
         this.pack();
     }
