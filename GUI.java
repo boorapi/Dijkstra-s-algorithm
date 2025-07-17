@@ -19,6 +19,7 @@ public class GUI extends JFrame implements ActionListener
 
     JMenuBar menuBar;// menu bar
     JMenu optionsMenu;// each menu
+    JMenu nodes;//nodes menu
     
     JMenuItem helpItem;// element in the menu
     JMenuItem exitItem;
@@ -60,6 +61,7 @@ public class GUI extends JFrame implements ActionListener
         setTitle("Dijkstra's Algorithm");// set the title of the window
         this.getContentPane().setPreferredSize(new Dimension(width, height));//Set the lenght and width of the window
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);//Exit when close the window
+
         this.myGraphic = new GraphicPanel();//Create a new graphic panel
         this.getContentPane().add(this.myGraphic, BorderLayout.CENTER);//Add the graphic panel to the center of the window
         
@@ -80,6 +82,11 @@ public class GUI extends JFrame implements ActionListener
         exitItem = new JMenuItem("exit");
         exitItem.addActionListener(this);//Link item to acction listener
         optionsMenu.add(exitItem);
+        //menu and menu items for nodes
+        nodes = new JMenu("Nodes");
+        menuBar.add(nodes);
+        for(String name:)
+
         
 
         this.pack();

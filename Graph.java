@@ -25,19 +25,22 @@ public class Graph{
         try{
             Scanner readFile = new Scanner(dataFile);// use Scanner to read the data file
             String x = readFile.nextLine();
-            this.nodesAmount = Integer.parseInt(x);            
+            this.nodesAmount = Integer.parseInt(x);  
+            //get nodes info          
             for(int i=0; i<nodesAmount; i++){
                 nodesArray.add(readFile.nextLine());
             }
-            
+            //get edges info
             String y = readFile.nextLine();
             this.edgesAmount = Integer.parseInt(y);
             for(int i=0; i<edgesAmount; i++){
                 edgesArray.add(readFile.nextLine());
             }
+            readFile.close();
         }catch (IOException e){
             e.printStackTrace();
         }
+
         //add nodes' name and location to their own ArrayList
         for(String n : nodesArray){
             String[] value = n.split(",");

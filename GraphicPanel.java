@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class GraphicPanel extends JPanel{
     
-    int radius = 10;// radius of the node
+    final int radius = 20;// radius of the node
 
     //This method will draw the node on the canvas using the x and y coordinates
     public void drawNode(Graphics2D g, int x, int y){
@@ -31,7 +31,7 @@ public class GraphicPanel extends JPanel{
     }
 
     public GraphicPanel(){
-        setBackground(Color.white);// set the background color of the panel
+        setBackground(new Color(204, 212, 224));// set the background color of the panel
      }
 
 
