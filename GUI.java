@@ -37,20 +37,22 @@ public class GUI extends JFrame implements ActionListener
 
     public void actionPerformed(ActionEvent e){
         String cmd = e.getActionCommand();
-        switch(cmd){
-            case "help" : createDialogBox("This is how the program works...", false);
-                break;
-            case "exit" : System.exit(0);
-                break;
-            case name : // if the action command is a node name
-                for(JMenuItem item : nodeItems){
-                    if(item.getActionCommand().equals(cmd)){
-                        createDialogBox("You have selected node: " + cmd, false);
-                        break;
-                    }
-                }
-                break;
+        if(cmd.equals("help")){ 
+            createDialogBox("This is how the program works...", false);
         }
+        else if(cmd.equals("exit")){
+            System.exit(0);
+        }
+        else{
+            for(JMenuItem item:nodeItems){
+                if(item.getActionCommand().equals(cmd)){
+                    myGraphic.repaint();// repaint the graphic panel to show the changes
+                    createDialogBox("You have selected "+item.getActionCommand()+" as the source node.", false);
+                    return;
+                }
+            }
+        }
+        
     }
     //This method will create dialog box 
     //it will take in the text that will be printed out in the box
