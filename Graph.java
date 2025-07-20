@@ -9,6 +9,7 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 public class Graph{
     private ArrayList<String> nodesArray = new ArrayList<String>();// to store node name and location
     private ArrayList<String> edgesArray = new ArrayList<String>();// to store edges infomation
@@ -20,6 +21,9 @@ public class Graph{
     private ArrayList<Integer> nodesX = new ArrayList<Integer>();// to store x coordinates of the nodes
     private ArrayList<Integer> nodesY = new ArrayList<Integer>();// to store y coordinates of the nodes
     
+    private ArrayList<Nodes> nodesList = new ArrayList<Nodes>();// to store all the nodes objects
+    private HashMap<String, Nodes> nodesMap = new HashMap<String, Nodes>();// to store nodes with their names as keys (easier and faster to access nodes by their names)
+
     public void load_data(){
         File dataFile = new File("simulation_data.csv"); // create new file object called data file.
         try{
@@ -53,14 +57,26 @@ public class Graph{
             nodesX.add(x);
             nodesY.add(y);
         }
-    }
-    
-    public void createNodes(){
+
+        //create nodes objects and add them to the nodesList
         for(int i=0; i<nodesAmount; i++){
             Nodes node = new Nodes(nodesX.get(i), nodesY.get(i), nodesName.get(i));
-            // Here you can add the node to a collection or perform other actions as needed
+            nodesList.add(node);// add the node to the nodesList
+            nodesMap.put(nodesName.get(i), node);// add the node to the nodesMap with its name as a key
+            }
+        //add links to the nodes and create edges
+        for(String edge : edgesArray){
+            String[] value = edge.split(",");
+            String fromNodeName = value[0];
+            String toNodeName = value[1];
+            Nodes fromNode = nodesMap.get(fromNodeName);// get the node object by its name
+            Nodes toNode = nodesMap.get(toNodeName);// get the node object by its name 
+            if(fromNode != null && toNode != null){
+                fromNode.addLink(toNode);// add link to the node
+            }
         }
     }
+
     
     public int nodesAmount(){
         return nodesAmount;
@@ -70,16 +86,8 @@ public class Graph{
         return edgesAmount;
     }
     
-    public ArrayList<Integer> getNodesX(){
-        return nodesX;
-    }
-    
-    public ArrayList<Integer> getNodesY(){
-        return nodesY;
-    }
-    
-    public ArrayList<String> nodesName(){
-        return nodesName;
+    public ArrayList<Nodes> getNodesList(){
+        return nodesList;
     }
     
     

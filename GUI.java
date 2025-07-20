@@ -103,15 +103,13 @@ public class GUI extends JFrame implements ActionListener
         menuBar.add(nodes);
         //add nodes to the menu
         graph.load_data();// load the data from the file
-        int nodeNum = 1;
-        for(String name:graph.nodesName()){
-            JMenuItem item = new JMenuItem(name+":  "+nodeNum);
-            item.setActionCommand(name);// set the action command to the name of the node
+        for(Nodes name:graph.getNodesList()){
+            JMenuItem item = new JMenuItem(name.getName());
+            item.setActionCommand(name.getName());// set the action command to the name of the node
             item.setToolTipText("Click to select this node as a source node");// set the tooltip text
             item.addActionListener(this);//Link item to action listener
             nodes.add(item);
             nodeItems.add(item);// add the item to the list of nodes so it can be accessed later (class variable)
-            nodeNum++;
         }
 
 

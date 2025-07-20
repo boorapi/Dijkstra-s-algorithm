@@ -23,6 +23,10 @@ public class Nodes
         
     }
 
+    public void addLink(Nodes node) {
+        linkTo.add(node);
+    }
+
     public String getName() {
         return name;
     }

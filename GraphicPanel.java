@@ -22,13 +22,10 @@ public class GraphicPanel extends JPanel{
 
         Graph graph = new Graph();// create a new graph object
         graph.load_data();// load the data from the file
-        ArrayList<Integer> nodesX = graph.getNodesX();// get the x coordinates of the nodes
-        ArrayList<Integer> nodesY = graph.getNodesY();// get the y coordinates of the
 
         for(int i=0; i<graph.nodesAmount(); i++){
-            int x = nodesX.get(i);// get the x coordinate of the node
-            int y = nodesY.get(i);// get the y coordinate of the node
-            drawNode(g2d, x, y, i+1);// draw the node on the canvas
+            Nodes node = graph.getNodesList().get(i);// get the node from the nodesList
+            drawNode(g2d, node.locationX(), node.locationY(), i+1);// draw the node on the canvas
         
     }
     }
