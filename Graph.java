@@ -55,8 +55,11 @@ public class Graph{
         }
     }
     
-    public void Graph(){
-        
+    public void createNodes(){
+        for(int i=0; i<nodesAmount; i++){
+            Nodes node = new Nodes(nodesX.get(i), nodesY.get(i), nodesName.get(i));
+            // Here you can add the node to a collection or perform other actions as needed
+        }
     }
     
     public int nodesAmount(){

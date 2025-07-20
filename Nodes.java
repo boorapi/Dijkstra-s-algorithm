@@ -14,13 +14,22 @@ public class Nodes
     private int y;
     private ArrayList<Nodes> linkTo;
     //Create new object from graph class to acess nodes arraylist
-    Graph obj = new Graph();
-
-    public void Location(int i){
+    
+    public Nodes (int x, int y , String name) {
+        this.x = x;
+        this.y = y;
+        this.name = name;
+        linkTo = new ArrayList<Nodes>();
         
     }
-    
-    public Nodes (){
-        
+
+    public String getName() {
+        return name;
+    }
+    public int locationX() {
+        return x;
+    }
+    public int locationY() {
+        return y;
     }
 }
