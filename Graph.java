@@ -18,10 +18,9 @@ public class Graph{
     private int edgesAmount;//amout of all the adges from the file
     
     private ArrayList<String> nodesName = new ArrayList<String>();// to store names of the nodes
-    private ArrayList<Integer> nodesX = new ArrayList<Integer>();// to store x coordinates of the nodes
-    private ArrayList<Integer> nodesY = new ArrayList<Integer>();// to store y coordinates of the nodes
     
     private ArrayList<Nodes> nodesList = new ArrayList<Nodes>();// to store all the nodes objects
+    private ArrayList<Edges> edgesList = new ArrayList<Edges>();// to store all the edges objects
     private HashMap<String, Nodes> nodesMap = new HashMap<String, Nodes>();// to store nodes with their names as keys (easier and faster to access nodes by their names)
 
     public void load_data(){
@@ -46,24 +45,17 @@ public class Graph{
         }
 
         //add nodes' name and location to their own ArrayList
-        for(String n : nodesArray){
-            String[] value = n.split(",");
+        for(String node : nodesArray){
+            String[] value = node.split(",");
             String name = value[0];
             nodesName.add(name);
-            String X = value[1];
-            String Y = value[2];
-            int x = Integer.parseInt(X);
-            int y = Integer.parseInt(Y);
-            nodesX.add(x);
-            nodesY.add(y);
+
+            Nodes nodeObject = new Nodes(Integer.parseInt(value[1]), Integer.parseInt(value[2]), value[0]);
+            nodesList.add(nodeObject);// add the node to the nodesList
+            nodesMap.put(value[0], nodeObject);// add the node to the nodesMap with its name as a key
         }
 
-        //create nodes objects and add them to the nodesList
-        for(int i=0; i<nodesAmount; i++){
-            Nodes node = new Nodes(nodesX.get(i), nodesY.get(i), nodesName.get(i));
-            nodesList.add(node);// add the node to the nodesList
-            nodesMap.put(nodesName.get(i), node);// add the node to the nodesMap with its name as a key
-            }
+        
         //add links to the nodes and create edges
         for(String edge : edgesArray){
             String[] value = edge.split(",");
@@ -71,17 +63,22 @@ public class Graph{
             String toNodeName = value[1];
             Nodes fromNode = nodesMap.get(fromNodeName);// get the node object by its name
             Nodes toNode = nodesMap.get(toNodeName);// get the node object by its name 
+            int weight = Integer.parseInt(value[2]);// get the weight of the edge
+            Edges edgeObject = new Edges(fromNode, toNode, weight);// create a new edge object
+            edgesList.add(edgeObject);
+            //if both nodes exist, create an edge and add it to the nodes
             if(fromNode != null && toNode != null){
-                fromNode.addLink(toNode);// add link to the node
+                fromNode.addLink(toNode);// add link to the node  
             }
         }
+
     }
 
     
     public int nodesAmount(){
         return nodesAmount;
     }
-    
+
     public int edgesAmount(){
         return edgesAmount;
     }
@@ -89,7 +86,11 @@ public class Graph{
     public ArrayList<Nodes> getNodesList(){
         return nodesList;
     }
-    
+
+    public ArrayList<Edges> getEdgesList(){
+        return edgesList;
+    }
+
     
 
 }
