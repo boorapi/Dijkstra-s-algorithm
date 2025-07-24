@@ -24,7 +24,7 @@ public class Graph{
     private HashMap<String, Nodes> nodesMap = new HashMap<String, Nodes>();// to store nodes with their names as keys (easier and faster to access nodes by their names)
 
     public void load_data(){
-        File dataFile = new File("simulation_data.csv"); // create new file object called data file.
+        File dataFile = new File("simulation_data3.csv"); // create new file object called data file.
         try{
             Scanner readFile = new Scanner(dataFile);// use Scanner to read the data file
             String x = readFile.nextLine();
