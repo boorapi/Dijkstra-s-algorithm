@@ -46,8 +46,9 @@ public class GUI extends JFrame implements ActionListener
         else{
             for(JMenuItem item:nodeItems){
                 if(item.getActionCommand().equals(cmd)){
+                    Nodes selectedNode = graph.getNodesMap().get(item.getActionCommand());// find node from nodesMap using the name form action command
+                    selectedNode.setColor(214, 187, 32);// set the color of the selected node to red
                     myGraphic.repaint();// repaint the graphic panel to show the changes
-                    createDialogBox("You have selected "+item.getActionCommand()+" as the source node.", false);
                     return;
                 }
             }
@@ -103,13 +104,15 @@ public class GUI extends JFrame implements ActionListener
         menuBar.add(nodes);
         //add nodes to the menu
         graph.load_data();// load the data from the file
+        int i = 1;
         for(Nodes name:graph.getNodesList()){
-            JMenuItem item = new JMenuItem(name.getName());
+            JMenuItem item = new JMenuItem(name.getName() + "    " + i);
             item.setActionCommand(name.getName());// set the action command to the name of the node
             item.setToolTipText("Click to select this node as a source node");// set the tooltip text
             item.addActionListener(this);//Link item to action listener
             nodes.add(item);
             nodeItems.add(item);// add the item to the list of nodes so it can be accessed later (class variable)
+            i++;
         }
 
 
