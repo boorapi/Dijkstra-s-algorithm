@@ -55,8 +55,7 @@ public class GraphicPanel extends JPanel{
         super.paintComponent(g);// call the paint method to paint
         Graphics2D g2d = (Graphics2D) g;// cast the graphics to Graphics2D
 
-        Graph graph = new Graph();// create a new graph object
-        graph.load_data();// load the data from the file
+        if(graph == null) return; // if graph is not set, return
 
         //draw edges
         for(int i=0; i<graph.edgesAmount(); i++){
