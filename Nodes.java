@@ -15,12 +15,16 @@ public class Nodes
     private int y;
     private ArrayList<Nodes> linkTo;
     private Color color;
+    private int cost;
+    private boolean visited; // to check if the node has been visited in the algorithm
    
     public Nodes (int x, int y , String name) {
         this.x = x;
         this.y = y;
         this.name = name;
         this.color = new Color(50, 143, 168);
+        this.cost = Integer.MAX_VALUE;
+        this.visited = false; // initially, the node is not visite
         linkTo = new ArrayList<Nodes>();
         
     }
@@ -47,6 +51,21 @@ public class Nodes
         this.color = new Color(r, g, b);
     }
 
+    public void setCost(int n){
+        this.cost = n;
+    }
+
+    public int getCost(){
+        return cost;
+    }
+
+    public void setVisited() {
+        this.visited = true;
+    }
+
+    public boolean getStatus(){
+        return visited;
+    }
 }
 
 
