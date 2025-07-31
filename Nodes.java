@@ -5,15 +5,15 @@
  * @author (your name)
  * @version (a version number or a date)
  */
-import java.util.ArrayList;
 import java.awt.Color;
+import java.util.HashMap;
 public class Nodes
 {
     private String name;
     //x and y location of the node on the screen
     private int x;
     private int y;
-    private ArrayList<Nodes> linkTo;
+    private HashMap<Nodes, Integer> linkTo;// neighboring nodes and their weights
     private Color color;
     private int cost;
     private boolean visited; // to check if the node has been visited in the algorithm
@@ -25,12 +25,12 @@ public class Nodes
         this.color = new Color(50, 143, 168);
         this.cost = Integer.MAX_VALUE;
         this.visited = false; // initially, the node is not visite
-        linkTo = new ArrayList<Nodes>();
+        linkTo = new HashMap<Nodes, Integer>();
         
     }
 
-    public void addLink(Nodes node) {
-        linkTo.add(node);
+    public void addLink(Nodes node, int weight) {
+        linkTo.put(node, weight);
     }
 
     public String getName() {
@@ -59,12 +59,16 @@ public class Nodes
         return cost;
     }
 
-    public void setVisited() {
-        this.visited = true;
+    public void setVisited(boolean visited) {
+        this.visited = visited;
     }
 
     public boolean getStatus(){
         return visited;
+    }
+
+    public HashMap<Nodes, Integer> getLinks() {
+        return linkTo;
     }
 }
 

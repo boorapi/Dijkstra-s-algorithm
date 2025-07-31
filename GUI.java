@@ -118,7 +118,6 @@ public class GUI extends JFrame implements ActionListener
         }
     }
 
-
     //This method will create dialog box 
     //it will take in the text that will be printed out in the box
     //and boolean to see if the box can be edit (add text)
@@ -134,8 +133,6 @@ public class GUI extends JFrame implements ActionListener
         box.setVisible(true);
         box.setTitle("How does it work?");
     }
-
-
 
     public GUI(){
 

@@ -68,7 +68,7 @@ public class Graph{
             edgesList.add(edgeObject);
             //if both nodes exist, create an edge and add it to the nodes
             if(fromNode != null && toNode != null){
-                fromNode.addLink(toNode);// add link to the node  
+                fromNode.addLink(toNode, weight);// add link to the node  
             }
         }
 
