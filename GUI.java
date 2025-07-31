@@ -24,12 +24,19 @@ public class GUI extends JFrame implements ActionListener
     JMenu optionsMenu;// each menu
     JMenu nodesMenu;//nodes menu
     JMenu SimulationMenu;//simulation menu
+    //Sub menus
+    JMenu sourceNodesMenu;// sub menu for source nodes
+    JMenu destinationNodesMenu;// sub menu for destination nodes
     
     JMenuItem helpItem;// element in the menu
     JMenuItem exitItem;
 
     JMenuItem startSimulationItem;// item to start the simulation
     JMenuItem saveDataItem;// item to save thecalculation data
+
+    JMenuItem addNodeItem;// item to add a new node
+    JMenuItem addEdgeItem;// item to add a new edge
+    JMenuItem removedEdgeItem;// item to remove an edge
 
     //Nodes menu items
     ArrayList<JMenuItem> nodeItems = new ArrayList<JMenuItem>();// to store all the nodes menu items
@@ -39,7 +46,9 @@ public class GUI extends JFrame implements ActionListener
 
     GraphicPanel myGraphic;
 
-    Nodes previousNode = null;// to store the previous node that was selected
+    Nodes sourceNode = null;// to store the previous node that was selected
+    Nodes destinationNode = null;// to store the destination node
+
 
     public void actionPerformed(ActionEvent e){
         String cmd = e.getActionCommand();
@@ -50,18 +59,36 @@ public class GUI extends JFrame implements ActionListener
             System.exit(0);
         }
         else if(cmd.equals("Start Simulation")){
-            if(previousNode == null){
+            if(sourceNode == null && destinationNode == null){
+                // show message dialog if no source node and destination node is selected using JOptionPane
+                JOptionPane.showMessageDialog(this, "Please select a source and destination node!");
+            }
+            else if(sourceNode == null){
                 // show message dialog if no source node is selected using JOptionPane
-                JOptionPane.showMessageDialog(this, "Please select a source node first!");
+                JOptionPane.showMessageDialog(this, "Please select a source node !");
+            }
+            else if(destinationNode == null){
+                JOptionPane.showMessageDialog(this, "Please select a destination node!");
             }
             else{
                 // run Dijkstra's algorithm with the source node and the graph
-                algorithym.runDijkstra(previousNode, graph);
-                createDialogBox(previousNode.getName()+" will be the soucre node, but I can not run the algo yet, will be able sonn!", false);
+                algorithym.runDijkstra(sourceNode, destinationNode, graph);
+                createDialogBox(sourceNode.getName()+" will be the soucre node, but I can not run the algo yet, will be able sonn!", false);
             }
         }
         else if(cmd.equals("Save Data")){
             // save the data to a file
+        }
+        //If cmd is integer, it means the user is trying to select a destination node
+        else if(isInterger(cmd)){
+            int index = Integer.parseInt(cmd) - 1;// convert the string to an integer and subtract 1 to get the index
+            Nodes destination = graph.getNodesList().get(index);// get the node from the list using the index
+            if(destinationNode != null && destinationNode != destination){
+                destinationNode.setColor(50, 143, 168);// reset the color of the previous node to default
+            }
+            destination.setColor(59, 163, 86);// change the color of the selected node
+            destinationNode = destination;// set the destination node to the selected node
+            myGraphic.repaint();// repaint the graphic panel to show the changes
         }
         else{
             for(JMenuItem item:nodeItems){
@@ -69,17 +96,26 @@ public class GUI extends JFrame implements ActionListener
                     // find node from nodesMap using the name form action command
                     Nodes selectedNode = graph.getNodesMap().get(item.getActionCommand());
                     // if there already a source node selected, reset its color
-                    if(previousNode != null && previousNode != selectedNode){
-                        previousNode.setColor(50, 143, 168);// reset the color of the previous node to default
+                    if(sourceNode != null && sourceNode != selectedNode){
+                        sourceNode.setColor(50, 143, 168);// reset the color of the previous node to default
                     }
                     selectedNode.setColor(214, 187, 32);// change the color of the selected node
-                    previousNode = selectedNode;// set the previous node to the selected node
+                    sourceNode = selectedNode;// set the previous node to the selected node
                     myGraphic.repaint();// repaint the graphic panel to show the changes
                     return;
                 }
             }
         }
         
+    }
+
+    public boolean isInterger(String str){
+        try {
+            Integer.parseInt(str);
+            return true; // if the string can be parsed to an integer, return true
+        } catch (NumberFormatException e) {
+            return false; // if it can't be parsed, return false
+        }
     }
 
 
@@ -140,9 +176,13 @@ public class GUI extends JFrame implements ActionListener
         SimulationMenu.add(saveDataItem);
         saveDataItem.setToolTipText("Click to save the calculation data to a file");// set the tooltip to give user info
 
-        //menu and menu items for nodes
-        nodesMenu = new JMenu("Source Node");
+        //menu and menu and menu items for Nodes menu
+        JMenu nodesMenu = new JMenu("Nodes");
         menuBar.add(nodesMenu);
+        JMenu sourceNodesMenu = new JMenu("Source Nodes");
+        nodesMenu.add(sourceNodesMenu);// add the source nodes menu to the nodes menu
+        JMenu destinationNodesMenu = new JMenu("Destination");
+        nodesMenu.add(destinationNodesMenu);// add the destination nodes menu to the nodes menu
         //add nodes to the menu
         graph.load_data();// load the data from the file
         myGraphic.setGraph(graph);// set the graph object in the graphic panel
@@ -152,10 +192,28 @@ public class GUI extends JFrame implements ActionListener
             item.setActionCommand(name.getName());// set the action command to the name of the node
             item.setToolTipText("Click to select this node as a source node");// set the tooltip text
             item.addActionListener(this);//Link item to action listener
-            nodesMenu.add(item);
+            sourceNodesMenu.add(item);
             nodeItems.add(item);// add the item to the list of nodes so it can be accessed later (class variable)
             i++;
         }
+        int j = 1;
+        for(Nodes name:graph.getNodesList()){
+            JMenuItem item = new JMenuItem(name.getName() + "    " + j);
+            item.setActionCommand(""+j);// set the action command to the name of the node
+            item.setToolTipText("Click to select this node as a destination node");// set the tooltip text
+            item.addActionListener(this);//Link item to action listener
+            destinationNodesMenu.add(item);// add the same item to the destination nodes menu
+            //nodeItems.add(item);// add the item to the list of nodes so it can be accessed later (class variable)
+            j++;
+        }
+        JMenuItem addNodesItem = new JMenuItem("Add Node");
+        addNodesItem.setActionCommand("Add Node");  
+        addNodesItem.addActionListener(this);//Link item to action listener
+        nodesMenu.add(addNodesItem);// add the item to the nodes menu
+        JMenuItem addEdgeItem = new JMenuItem("Add Edge");
+        addEdgeItem.setActionCommand("Add Edge");   
+        addEdgeItem.addActionListener(this);//Link item to action listener
+        nodesMenu.add(addEdgeItem);// add the item to the nodes menu
 
 
         this.pack();
