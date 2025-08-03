@@ -21,10 +21,12 @@ public class Graph{
     
     private ArrayList<Nodes> nodesList = new ArrayList<Nodes>();// to store all the nodes objects
     private ArrayList<Edges> edgesList = new ArrayList<Edges>();// to store all the edges objects
-    private HashMap<String, Nodes> nodesMap = new HashMap<String, Nodes>();// to store nodes with their names as keys (easier and faster to access nodes by their names)
+    // to store nodes with their names as keys (easier and faster to access nodes by their names)
+    private HashMap<String, Nodes> nodesMap = new HashMap<String, Nodes>();
 
+    String fileName;
     public void load_data(){
-        File dataFile = new File("simulation_data.csv"); // create new file object called data file.
+        File dataFile = new File(fileName); // create new file object called data file.
         try{
             Scanner readFile = new Scanner(dataFile);// use Scanner to read the data file
             String x = readFile.nextLine();
@@ -68,13 +70,15 @@ public class Graph{
             edgesList.add(edgeObject);
             //if both nodes exist, create an edge and add it to the nodes
             if(fromNode != null && toNode != null){
-                fromNode.addLink(toNode, weight);// add link to the node  
+                fromNode.addLink(toNode, weight);// add link to the node 
+                toNode.addLink(fromNode, weight);// add link to the node in the opposite direction 
             }
         }
 
+        
+
     }
 
-    
     public int nodesAmount(){
         return nodesAmount;
     }
@@ -93,6 +97,14 @@ public class Graph{
 
     public HashMap<String, Nodes> getNodesMap(){
         return nodesMap;
+    }
+
+    public void setFileName(String fileName){
+        this.fileName = fileName;
+    }
+
+    public String getFileName(){
+        return fileName;
     }
     
 

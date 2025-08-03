@@ -34,7 +34,7 @@ public class GraphicPanel extends JPanel{
         int xEnd = endNode.locationX();
         int yEnd = endNode.locationY();
         g2d.setColor(new Color(230, 240, 240));// set the color of the edge
-        g2d.setStroke(new BasicStroke(2));
+        g2d.setStroke(new BasicStroke(3));
         g2d.drawLine(xStart, yStart, xEnd, yEnd);// draw the line between the two nodes 
     }
 

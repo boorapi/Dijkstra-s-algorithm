@@ -10,8 +10,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.geom.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class GUI extends JFrame implements ActionListener
@@ -48,6 +46,7 @@ public class GUI extends JFrame implements ActionListener
 
     Nodes sourceNode = null;// to store the previous node that was selected
     Nodes destinationNode = null;// to store the destination node
+    boolean hasRun = false;// to check if the algorithm has been run
 
 
     public void actionPerformed(ActionEvent e){
@@ -70,14 +69,20 @@ public class GUI extends JFrame implements ActionListener
             else if(destinationNode == null){
                 JOptionPane.showMessageDialog(this, "Please select a destination node!");
             }
+            //This is where the magic happens
             else{
                 // run Dijkstra's algorithm with the source node and the graph
                 algorithym.runDijkstra(sourceNode, destinationNode, graph);
-                createDialogBox(sourceNode.getName()+" will be the soucre node, but I can not run the algo yet, will be able sonn!", false);
+                hasRun = true;// set the hasRun variable to true
             }
         }
         else if(cmd.equals("Save Data")){
-            // save the data to a file
+            if(hasRun){
+                algorithym.writeToFile(sourceNode, destinationNode);// write the data to a file
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Please run the simulation first!");
+            }
         }
         //If cmd is integer, it means the user is trying to select a destination node
         else if(isInterger(cmd)){
@@ -181,6 +186,7 @@ public class GUI extends JFrame implements ActionListener
         JMenu destinationNodesMenu = new JMenu("Destination");
         nodesMenu.add(destinationNodesMenu);// add the destination nodes menu to the nodes menu
         //add nodes to the menu
+        graph.setFileName("simulation_data3.csv");// set the file name to load the data from
         graph.load_data();// load the data from the file
         myGraphic.setGraph(graph);// set the graph object in the graphic panel
         int i = 1;

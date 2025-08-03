@@ -25,7 +25,7 @@ public class Nodes
         this.color = new Color(50, 143, 168);
         this.cost = Integer.MAX_VALUE;
         this.visited = false; // initially, the node is not visite
-        linkTo = new HashMap<Nodes, Integer>();
+        this.linkTo = new HashMap<Nodes, Integer>();
         
     }
 
