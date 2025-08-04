@@ -47,8 +47,18 @@ public class Nodes
         return color;
     }
 
-    public void setColor(int r, int g,int b){
-        this.color = new Color(r, g, b);
+    public void setColorStatus(String status){
+        if(status.equals("useNode")){
+            this.color = new Color(71, 158, 78);
+        } else if(status.equals("processing")){
+            this.color = new Color(196, 47, 47);
+        }else if(status.equals("source")){
+            this.color = new Color(214, 187, 32);
+        }else if (status.equals("destination")){
+            this.color = new Color(59, 163, 86);
+        } else {
+            this.color = new Color(50, 143, 168);
+        }
     }
 
     public void setCost(int n){

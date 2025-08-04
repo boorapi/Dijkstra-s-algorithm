@@ -23,6 +23,7 @@ public class Graph{
     private ArrayList<Edges> edgesList = new ArrayList<Edges>();// to store all the edges objects
     // to store nodes with their names as keys (easier and faster to access nodes by their names)
     private HashMap<String, Nodes> nodesMap = new HashMap<String, Nodes>();
+    private HashMap<String, Edges> edgesMap = new HashMap<String, Edges>();
 
     String fileName;
     public void load_data(){
@@ -66,9 +67,11 @@ public class Graph{
             Nodes fromNode = nodesMap.get(fromNodeName);// get the node object by its name
             Nodes toNode = nodesMap.get(toNodeName);// get the node object by its name 
             int weight = Integer.parseInt(value[2]);// get the weight of the edge
-            Edges edgeObject = new Edges(fromNode, toNode, weight);// create a new edge object
-            edgesList.add(edgeObject);
-            //if both nodes exist, create an edge and add it to the nodes
+            Edges edgeForward = new Edges(fromNode, toNode, weight);// create a new edge object
+            edgesMap.put(fromNodeName + "-" + toNodeName, edgeForward);// add the edge to the edgesMap with its name as a key
+            edgesMap.put(toNodeName + "-" + fromNodeName, edgeForward);//same object under different key for undirected graph
+            edgesList.add(edgeForward);//edges list olny contains edges in one direction
+            //if both nodes exist, create an edge and add it to the nodes   
             if(fromNode != null && toNode != null){
                 fromNode.addLink(toNode, weight);// add link to the node 
                 toNode.addLink(fromNode, weight);// add link to the node in the opposite direction 
@@ -99,6 +102,10 @@ public class Graph{
         return nodesMap;
     }
 
+    public HashMap<String, Edges> getEdgesMap(){
+        return edgesMap;
+    }
+    
     public void setFileName(String fileName){
         this.fileName = fileName;
     }

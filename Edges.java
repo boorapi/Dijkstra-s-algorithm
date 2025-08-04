@@ -29,7 +29,15 @@ public class Edges {
         return color;
     }
 
-    public void setColor(int r, int g, int b) {
-        this.color = new Color(r, g, b);
+
+    public void setColorStatus(String status){
+        if(status.equals("usePath")){
+            this.color = new Color(71, 158, 78);
+        } else if(status.equals("processing")){
+            this.color = new Color(196, 47, 47);
+        } else {
+            this.color = new Color(230, 240, 240);
+        }
     }
+
 }

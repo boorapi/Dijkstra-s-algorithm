@@ -8,19 +8,31 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Algorithym{
+public class Algorithym extends Thread{
+    private GraphicPanel graphicPanel;  // Add this field
     HashMap<Nodes, Nodes> previousNode;
     String fileName;
     ArrayList<Nodes> nodesList;
+    HashMap<String, Nodes> nodesMap;
+    HashMap<String, Edges> edgesMap;
 
-    public Algorithym(){
-        // Constructor for Algorithm class
-        // This class can be used to implement urce Dijkstra's algorithm or any other algorithm related to urce graph
+    // Modified constructor
+    public Algorithym(GraphicPanel graphicPanel) {
+        this.graphicPanel = graphicPanel;
     }
 
-    public void runDijkstra(Nodes source, Nodes destination, Graph graph){
+    public void runDijkstra(Nodes source, Nodes destination, Graph graph, int speed){
         this.fileName = graph.getFileName();
         this.nodesList = graph.getNodesList();
+        this.nodesMap = graph.getNodesMap();
+        this.edgesMap = graph.getEdgesMap();
+
+        for(Nodes n : nodesList){
+                n.setColorStatus("default");//Set all nodes color to blue
+        }
+        for(Edges e : graph.getEdgesList()){
+            e.setColorStatus("default");//Set all edges color to light gray
+        }
 
         //Initail setup for every node
         for(Nodes n : graph.getNodesList()){
@@ -36,9 +48,13 @@ public class Algorithym{
 
         while(!pq.isEmpty()) {
             Nodes current = pq.poll();
+            current.setColorStatus("processing"); // Set the color of the current node to indicate it is being processed
+            graphicPanel.repaint(); // Repaint the graphic panel to visualize the current state
+            sleepFor(speed);
+
 
             if(current.getStatus()) {
-                continue; // If urce node has already been visited, skip to next iteration
+                continue; // If source node has already been visited, skip to next iteration
             }
 
             for(Map.Entry<Nodes, Integer> entry : current.getLinks().entrySet()){
@@ -50,10 +66,31 @@ public class Algorithym{
                     neighbourNode.setCost(newCost);
                     previousNode.put(neighbourNode, current);
                     pq.add(neighbourNode);  // push a new entry   
+
+                    Edges edge = edgesMap.get(current.getName() + "-" + neighbourNode.getName());
+                    if (edge != null){
+                    edge.setColorStatus("processing");
+                    }
+
+                    neighbourNode.setColorStatus("processing");
+                    graphicPanel.repaint();
+                    sleepFor(speed);
                 }
             }
             current.setVisited(true); //Mark cuurecnt node as visited after go through all urce links
-        }    
+        }
+            ArrayList<Nodes> path = backtrack(source, destination);
+            for(int i = path.size() - 1; i >= 0; i--){
+                if(i > 0){
+                    Edges edge = edgesMap.get(path.get(i).getName() + "-" + path.get(i - 1).getName());// get the edge between the two nodes
+                    if(edge != null){
+                        edge.setColorStatus("usePath");// set the color of the edge to indicate it is part of the path
+                    }
+                }
+                path.get(i).setColorStatus("useNode");// set the color of the node to indicate it is part of the path
+                graphicPanel.repaint();
+                sleepFor(300);
+            }
     }
 
     public void writeToFile(Nodes source, Nodes destination){
@@ -76,7 +113,7 @@ public class Algorithym{
             writer.write("\n");
             writer.write("\n");
             writer.write("\n");
-            writer.write("***These are paths from source to all nodes***");
+            writer.write("***These are paths from source node to all other nodes***");
             writer.write("\n");
             for(Nodes node : nodesList){
                 if(node != source) {
@@ -115,5 +152,14 @@ public class Algorithym{
         }
         return path;
     }
+
+    private void sleepFor(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

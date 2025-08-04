@@ -16,7 +16,6 @@ public class GUI extends JFrame implements ActionListener
 {
 
     Graph graph = new Graph();// create a new graph object
-    Algorithym algorithym = new Algorithym();// create a new algorithm object
 
     JMenuBar menuBar;// menu bar
     JMenu optionsMenu;// each menu
@@ -43,6 +42,7 @@ public class GUI extends JFrame implements ActionListener
     int height = 900;// height of the window/jframe
 
     GraphicPanel myGraphic;
+    Algorithym algorithym;
 
     Nodes sourceNode = null;// to store the previous node that was selected
     Nodes destinationNode = null;// to store the destination node
@@ -64,7 +64,7 @@ public class GUI extends JFrame implements ActionListener
             }
             else if(sourceNode == null){
                 // show message dialog if no source node is selected using JOptionPane
-                JOptionPane.showMessageDialog(this, "Please select a source node !");
+                JOptionPane.showMessageDialog(this, "Please select a source node!");
             }
             else if(destinationNode == null){
                 JOptionPane.showMessageDialog(this, "Please select a destination node!");
@@ -72,8 +72,11 @@ public class GUI extends JFrame implements ActionListener
             //This is where the magic happens
             else{
                 // run Dijkstra's algorithm with the source node and the graph
-                algorithym.runDijkstra(sourceNode, destinationNode, graph);
-                hasRun = true;// set the hasRun variable to true
+                Thread dijkstraThread = new Thread(() -> {
+                algorithym.runDijkstra(sourceNode, destinationNode, graph, 700);  // 200 ms sleep for visualization
+                hasRun = true; // set hasRun to true after the algorithm has been run
+                });
+                dijkstraThread.start(); // start the thread to run the algorithm
             }
         }
         else if(cmd.equals("Save Data")){
@@ -89,29 +92,22 @@ public class GUI extends JFrame implements ActionListener
             int index = Integer.parseInt(cmd) - 1;// convert the string to an integer and subtract 1 to get the index
             Nodes destination = graph.getNodesList().get(index);// get the node from the list using the index
             if(destinationNode != null && destinationNode != destination){
-                destinationNode.setColor(50, 143, 168);// reset the color of the previous node to default
+                destinationNode.setColorStatus("default");// reset the color of the previous node to default
             }
-            destination.setColor(59, 163, 86);// change the color of the selected node
+            destination.setColorStatus("destination");// change the color of the selected node
             destinationNode = destination;// set the destination node to the selected node
             myGraphic.repaint();// repaint the graphic panel to show the changes
         }
         else{
-            for(JMenuItem item:nodeItems){
-                if(item.getActionCommand().equals(cmd)){
-                    // find node from nodesMap using the name form action command
-                    Nodes selectedNode = graph.getNodesMap().get(item.getActionCommand());
-                    // if there already a source node selected, reset its color
-                    if(sourceNode != null && sourceNode != selectedNode){
-                        sourceNode.setColor(50, 143, 168);// reset the color of the previous node to default
-                    }
-                    selectedNode.setColor(214, 187, 32);// change the color of the selected node
-                    sourceNode = selectedNode;// set the previous node to the selected node
-                    myGraphic.repaint();// repaint the graphic panel to show the changes
-                    return;
-                }
+            Nodes selectedNode = graph.getNodesMap().get(cmd);
+            if (sourceNode != null && sourceNode != selectedNode) {
+                sourceNode.setColorStatus("default");// reset the color of the previous node to default
             }
+            selectedNode.setColorStatus("source");
+            sourceNode = selectedNode;
+            myGraphic.repaint();
         }
-        
+
     }
 
     public boolean isInterger(String str){
@@ -186,9 +182,10 @@ public class GUI extends JFrame implements ActionListener
         JMenu destinationNodesMenu = new JMenu("Destination");
         nodesMenu.add(destinationNodesMenu);// add the destination nodes menu to the nodes menu
         //add nodes to the menu
-        graph.setFileName("simulation_data3.csv");// set the file name to load the data from
+        graph.setFileName("simulation_data2.csv");// set the file name to load the data from
         graph.load_data();// load the data from the file
         myGraphic.setGraph(graph);// set the graph object in the graphic panel
+        algorithym = new Algorithym(myGraphic);
         int i = 1;
         for(Nodes name:graph.getNodesList()){
             JMenuItem item = new JMenuItem(name.getName() + "    " + i);
