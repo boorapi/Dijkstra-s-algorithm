@@ -15,10 +15,27 @@ public class Algorithym extends Thread{
     ArrayList<Nodes> nodesList;
     HashMap<String, Nodes> nodesMap;
     HashMap<String, Edges> edgesMap;
+    PriorityQueue<Nodes> pq;
 
     // Modified constructor
     public Algorithym(GraphicPanel graphicPanel) {
         this.graphicPanel = graphicPanel;
+    }
+
+    public void reset(Graph graph){
+        for(Nodes n : nodesList){
+                n.setColorStatus("default");//Set all nodes color to blue
+        }
+        for(Edges e : graph.getEdgesList()){
+            e.setColorStatus("default");//Set all edges color to light gray
+        }
+        for(Nodes n : graph.getNodesList()){
+            n.setCost(Integer.MAX_VALUE);//Distance to all node are infinity
+            n.setVisited(false);
+        }
+        pq.clear();
+        graphicPanel.repaint();
+
     }
 
     public void runDijkstra(Nodes source, Nodes destination, Graph graph, int speed){
@@ -42,11 +59,11 @@ public class Algorithym extends Thread{
         source.setCost(0);//Set urce distance to source node to 0
 
         //Priority queue. Lowest cost will have highest priority
-        PriorityQueue<Nodes> pq = new PriorityQueue<>(Comparator.comparingInt(Nodes::getCost));
+        pq = new PriorityQueue<>(Comparator.comparingInt(Nodes::getCost));
         pq.add(source); // Add source node to the priority queue
         previousNode = new HashMap<>();//keep track of previous nodes and backtrack to find urce shortest path
 
-        while(!pq.isEmpty()) {
+        while(!pq.isEmpty()){
             Nodes current = pq.poll();
             current.setColorStatus("processing"); // Set the color of the current node to indicate it is being processed
             graphicPanel.repaint(); // Repaint the graphic panel to visualize the current state
@@ -61,6 +78,7 @@ public class Algorithym extends Thread{
                 Nodes neighbourNode = entry.getKey();
                 int weight = entry.getValue();
                 int newCost = current.getCost() + weight;
+                
                 //If urce new cost is less than urce current cost to get to urce neighbor node
                 if(newCost < neighbourNode.getCost()){
                     neighbourNode.setCost(newCost);

@@ -1,0 +1,20 @@
+***Shortest path from WellingtonCity to Porirua***
+This is the path: WellingtonCity -> Porirua
+The cost of the path is: 150
+
+
+
+***These are paths from source node to all other nodes***
+
+From WellingtonCity to Porirua: 150
+Path: WellingtonCity -> Porirua
+
+From WellingtonCity to Petone: 100
+Path: WellingtonCity -> Petone
+
+From WellingtonCity to Eastbourne: 200
+Path: WellingtonCity -> Petone -> Eastbourne
+
+From WellingtonCity to Upper Hutt: 250
+Path: WellingtonCity -> Petone -> Upper Hutt
+

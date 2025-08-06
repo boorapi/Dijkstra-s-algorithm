@@ -1,0 +1,54 @@
+
+Welcome to the Dijkstra Algorithm Program
+
+This program helps you visualize and understand how Dijkstra’s shortest path algorithm works.
+
+------------------------------------------------------------
+How to Run the Simulation
+------------------------------------------------------------
+1. Select a Source Node:
+   - Open the "Nodes → Source Nodes" menu and click on a node.
+
+2. Select a Destination Node:
+   - Open the "Nodes → Destination Nodes" menu and choose your target node.
+
+3. Start the Simulation:
+   - Go to "Simulation → Start" to run the algorithm.
+   - The program will step through Dijkstra’s algorithm, updating node and edge colors to show progress.
+
+4. Reset:
+   - Go to "Simulation → Reset" to clear the simulation and start over.
+
+------------------------------------------------------------
+Color Guide
+------------------------------------------------------------
+- Blue nodes & white edges: Default state before running the algorithm.
+- Yellow nodes & yellow edges: Nodes and edges currently being processed.
+- Red nodes & red edges: The shortest path between the source and destination.
+- Green node: Selected source node.
+- Orange node: Selected destination node.
+- Gray edges: Edges not used in the final shortest path.
+
+------------------------------------------------------------
+File Menu
+------------------------------------------------------------
+- Open: Import a new graph file. Make sure the file is in CSV format (node name and coordinates, edges with weights).
+- Save / Save As: Save the results of the simulation to a TXT file.
+
+------------------------------------------------------------
+Adding Data
+------------------------------------------------------------
+1. Adding Nodes to a File:
+   Format: NodeName,xCoordinate,yCoordinate
+   Example: A,100,200
+
+2. Adding Edges to a File:
+   Format: Node1-Node2,weight
+   Example: A-B,10
+
+------------------------------------------------------------
+Tips
+------------------------------------------------------------
+- Always make sure the CSV file is formatted properly before importing.
+- You can re-run the simulation with different source and destination nodes without reopening the file.
+- If the graph looks cluttered, adjust the node positions in the CSV file manually.
