@@ -229,11 +229,15 @@ public class GUI extends JFrame implements ActionListener
     }
 
     private void setupGraph(){
-        graph.setFileName("simulation_data.csv");// set the file name to load the data from
+        String name = JOptionPane.showInputDialog(null, "Enter file name:");
+        graph.setFileName(name);// set the file name to load the data from
         graph.load_data();// load the data from the file
         myGraphic.setGraph(graph);// set the graph object in the graphic panel
         algorithym = new Algorithym(myGraphic);
     }
+
+
+
 
     private void Simulation(String cmd){
         if(cmd.equals("Start")){
