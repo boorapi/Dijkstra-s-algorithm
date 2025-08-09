@@ -1,0 +1,29 @@
+***Shortest path from Redwood to Hillcrest***
+This is the path: Redwood -> Seaview -> Stonefield -> Hillcrest
+The cost of the path is: 550
+
+
+
+***These are paths from source node to all other nodes***
+
+From Redwood to Seaview: 180
+Path: Redwood -> Seaview
+
+From Redwood to Stonefield: 400
+Path: Redwood -> Seaview -> Stonefield
+
+From Redwood to Brookside: 150
+Path: Redwood -> Brookside
+
+From Redwood to Fairview: 350
+Path: Redwood -> Brookside -> Fairview
+
+From Redwood to Hillcrest: 550
+Path: Redwood -> Seaview -> Stonefield -> Hillcrest
+
+From Redwood to Lakeside: 300
+Path: Redwood -> Lakeside
+
+From Redwood to Oakridge: 490
+Path: Redwood -> Lakeside -> Oakridge
+

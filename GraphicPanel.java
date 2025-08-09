@@ -19,9 +19,11 @@ public class GraphicPanel extends JPanel{
         int y = node.locationY();// get the y coordinate of the node
         g2d.setColor(node.getColor());// set the color of the node
         g2d.fillOval(x-radius, y-radius, radius*2, radius*2);//draw the node
-        g2d.setColor(node.getColor());// set the color of the node again to draw the outline
-        g2d.setColor(new Color(255, 255, 255));
+        g2d.setColor(node.getOutline());
+        g2d.setStroke(new BasicStroke(3));
+        g2d.drawOval(x-radius, y-radius, radius*2, radius*2);
         // draw the number inside the node
+        g2d.setColor(new Color(255, 255, 255));
         g2d.setFont(new Font("Arial", Font.BOLD, 14));// set the font of the number inside the node
         if(number < 10){
             g2d.drawString(number+"", x-4, y+5);// draw the number inside the node)

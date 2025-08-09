@@ -60,7 +60,7 @@ public class GUI extends JFrame implements ActionListener
     public GUI(){
         setTitle("Dijkstra's Algorithm");
         setupWindow();
-        setupGraph();
+        setupGraph(true);
         setupMenu();
         this.pack();
         this.setVisible(true);
@@ -79,7 +79,9 @@ public class GUI extends JFrame implements ActionListener
             Simulation(cmd);
         }
         else if(cmd.equals("Open")){
-            JOptionPane.showMessageDialog(this, "This opption is currently unavaililable\n Plese go to help menu to find out more");
+            open();
+            sourceNode = null;
+            destinationNode = null;
         }
         else if(cmd.equals("Save" )){
             if(hasRun){
@@ -226,17 +228,8 @@ public class GUI extends JFrame implements ActionListener
         addEdgeItem.setActionCommand("Add Edge");   
         addEdgeItem.addActionListener(this);//Link item to action listener
         nodesMenu.add(addEdgeItem);// add the item to the nodes menu
-    }
 
-    private void setupGraph(){
-        //String name = JOptionPane.showInputDialog(null, "Enter file name:");
-        String name = "simulation_data3.csv";
-        graph.setFileName(name);// set the file name to load the data from
-        graph.load_data();// load the data from the file
-        myGraphic.setGraph(graph);// set the graph object in the graphic panel
-        algorithym = new Algorithym(myGraphic);
     }
-
 
     private void Simulation(String cmd){
         if(cmd.equals("Start")){
@@ -263,6 +256,8 @@ public class GUI extends JFrame implements ActionListener
         }
         else{
             algorithym.reset(graph);
+            sourceNode = null;
+            destinationNode = null;
         }
     }
 
@@ -286,5 +281,39 @@ public class GUI extends JFrame implements ActionListener
             destinationNode = destination;// set the destination node to the selected node
             myGraphic.repaint();// repaint the graphic panel to show the changes
     }
-        
+    
+    private void setupGraph(boolean initialSetUp) {
+    String name;
+
+    if (initialSetUp) {
+        name = "simulation_data.csv";
+    } else {
+        name = JOptionPane.showInputDialog(null, "Enter file name:");
+    }
+    String previousFile = graph.getFileName();
+    graph.reset(); // clear any old data BEFORE loading
+
+    graph.setFileName(name);
+    if (graph.load_data().equals("File not found")) {
+        JOptionPane.showMessageDialog(this, 
+            "File not found. Please check if the file you wish to\n" +
+            "open is in the same directory and retry.");
+        graph.setFileName(previousFile);
+        graph.load_data();
+        return; // don't continue if load failed
+    }
+
+    myGraphic.setGraph(graph);       // attach the loaded graph
+    algorithym = new Algorithym(myGraphic); // create new algorithm object
+    }
+
+    private void open() {
+        setupGraph(false);
+        menuBar.removeAll();
+        menuBar.revalidate();
+        menuBar.repaint();
+        setupMenu();
+        myGraphic.repaint();
+    
+    }        
 }

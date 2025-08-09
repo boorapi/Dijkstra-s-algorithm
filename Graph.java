@@ -26,7 +26,7 @@ public class Graph{
     private HashMap<String, Edges> edgesMap = new HashMap<String, Edges>();
 
     String fileName;
-    public void load_data(){
+    public String load_data(){
         File dataFile = new File(fileName); // create new file object called data file.
         try{
             Scanner readFile = new Scanner(dataFile);// use Scanner to read the data file
@@ -45,6 +45,7 @@ public class Graph{
             readFile.close();
         }catch (IOException e){
             e.printStackTrace();
+            return "File not found";
         }
 
         //add nodes' name and location to their own ArrayList
@@ -67,6 +68,9 @@ public class Graph{
             Nodes fromNode = nodesMap.get(fromNodeName);// get the node object by its name
             Nodes toNode = nodesMap.get(toNodeName);// get the node object by its name 
             int weight = Integer.parseInt(value[2]);// get the weight of the edge
+            if(weight<0){
+                return "Weight less then 0";
+            }
             Edges edgeForward = new Edges(fromNode, toNode, weight);// create a new edge object
             edgesMap.put(fromNodeName + "-" + toNodeName, edgeForward);// add the edge to the edgesMap with its name as a key
             edgesMap.put(toNodeName + "-" + fromNodeName, edgeForward);//same object under different key for undirected graph
@@ -78,8 +82,7 @@ public class Graph{
             }
         }
 
-        
-
+        return "";
     }
 
     public int nodesAmount(){
@@ -113,6 +116,23 @@ public class Graph{
     public String getFileName(){
         return fileName;
     }
-    
+
+    //method to clear everything for new graph
+    public void reset(){
+    // Clear all ArrayLists
+    nodesArray.clear();
+    edgesArray.clear();
+    nodesName.clear();
+    nodesList.clear();
+    edgesList.clear();
+
+    // Clear all HashMaps
+    nodesMap.clear();
+    edgesMap.clear();
+
+    // Optionally reset counters
+    nodesAmount = 0;
+    edgesAmount = 0;
+    }
 
 }
