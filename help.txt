@@ -23,8 +23,8 @@ How to Run the Simulation
 Color Guide
 ------------------------------------------------------------
 - Blue nodes & white edges: Default state before running the algorithm.
-- White edges: Untouched — paths not worth exploring (never added to queue).
-- Red nodes & edges: Paths being considered or processed by the algorithm (added to priority queue).
+- White edges: Edges not used in any path.
+- Red nodes & edges: Uses path to get to everyother nodes.
 - Green nodes & edges: The final shortest path from source to destination after algorithm completion.
 
 ------------------------------------------------------------

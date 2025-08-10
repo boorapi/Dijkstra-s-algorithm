@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Algorithym extends Thread{
+public class Algorithm extends Thread{
     private GraphicPanel graphicPanel;// Add this field
     HashMap<Nodes, Nodes> previousNode;//To backtrack when finding path
     String fileName;
@@ -22,7 +22,7 @@ public class Algorithym extends Thread{
     PriorityQueue<Nodes> pq;
 
     //Constructor
-    public Algorithym(GraphicPanel graphicPanel) {
+    public Algorithm(GraphicPanel graphicPanel) {
         this.graphicPanel = graphicPanel;
     }
     //Reset if the user want to rerun the algorithm
@@ -88,18 +88,27 @@ public class Algorithym extends Thread{
                 // If the new cost is less than the current cost to get to neighbor
                 if (newCost < neighbourNode.getCost()) {
                     neighbourNode.setCost(newCost); // Update cost
-                    previousNode.put(neighbourNode, current); // Record path
-                    pq.add(neighbourNode); // Push neighbor into queue
 
-                    // Highlight the edge being processed
-                    Edges edge = edgesMap.get(current.getName() + "-" + neighbourNode.getName());
-                    if (edge != null) {
-                        edge.setColorStatus("processing");
+                    // Reset color of old edge if exists
+                    Nodes oldPrev = previousNode.get(neighbourNode);
+                    if (oldPrev != null) {
+                        Edges oldEdge = edgesMap.get(oldPrev.getName() + "-" + neighbourNode.getName());
+                        if (oldEdge != null) {
+                            oldEdge.setColorStatus("default"); // Reset old edge color to white
+                        }
                     }
 
-                    neighbourNode.setColorStatus("processing"); // Highlight neighbor
-                    graphicPanel.repaint(); // Update visualization
-                    sleepFor(speed); // Pause for animation
+                    previousNode.put(neighbourNode, current); // Record new path
+
+                    // Set new edge color to red (processing)
+                    Edges newEdge = edgesMap.get(current.getName() + "-" + neighbourNode.getName());
+                    if (newEdge != null) {
+                        newEdge.setColorStatus("processing"); // or "usePath" depending on your colors
+                    }
+                    pq.add(neighbourNode); // Add neighbor with updated cost
+                    neighbourNode.setColorStatus("processing"); // Highlight neighbor node if you want
+                    graphicPanel.repaint();
+                    sleepFor(speed);
                 }
             }
             current.setVisited(true); // Mark current node as visited after checking all links

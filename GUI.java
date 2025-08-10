@@ -48,7 +48,7 @@ public class GUI extends JFrame implements ActionListener
     final int HEIGHT = 900;// height of the window/jframe
 
     GraphicPanel myGraphic;
-    Algorithym algorithym;
+    Algorithm algorithm;
 
     Nodes sourceNode = null;// to store the previous node that was selected
     Nodes destinationNode = null;// to store the destination node
@@ -83,7 +83,8 @@ public class GUI extends JFrame implements ActionListener
         else if(cmd.equals("Save" )){
             //Check if the user has run the algorithm
             if(hasRun){
-                algorithym.writeToFile(sourceNode, destinationNode);// write the data to a file
+                algorithm.writeToFile(sourceNode, destinationNode);// write the data to a file
+                JOptionPane.showMessageDialog(this, "Save successfully!");
             }
             else{//if the algorithm has not been run yet. Tell user they have to run the algorithm first
                 JOptionPane.showMessageDialog(this, "Please run the simulation first!");
@@ -253,14 +254,14 @@ public class GUI extends JFrame implements ActionListener
             else{
                 // run Dijkstra's algorithm with the source node and the graph on new thread
                 Thread dijkstraThread = new Thread(() -> {
-                algorithym.runDijkstra(sourceNode, destinationNode, graph, 400);  // 400 ms sleep for visualization
+                algorithm.runDijkstra(sourceNode, destinationNode, graph, 400);  // 400 ms sleep for visualization
                 hasRun = true; // set hasRun to true after the algorithm has been run
                 });
                 dijkstraThread.start(); // start the thread to run the algorithm
             }
         }
         else{//reset simulation
-            algorithym.reset(graph);
+            algorithm.reset(graph);
             sourceNode = null;
             destinationNode = null;
         }
@@ -310,6 +311,9 @@ public class GUI extends JFrame implements ActionListener
         name = "simulation_data.csv";// default simulation data file
     } else {
         name = JOptionPane.showInputDialog(null, "Enter file name:");// ask user for file name
+        if (name == null) { // User cancelled the input dialog
+            return;
+        }
     }
     String previousFile = graph.getFileName();
     graph.reset(); // clear any old data before loading
@@ -334,7 +338,7 @@ public class GUI extends JFrame implements ActionListener
     }
 
     myGraphic.setGraph(graph);// attach the loaded graph
-    algorithym = new Algorithym(myGraphic); // create new algorithm object
+    algorithm = new Algorithm(myGraphic); // create new algorithm object
     }
     // Opens new simulation file and resets menus/graphics
     private void open() {
