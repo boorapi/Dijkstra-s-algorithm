@@ -1,11 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.*;
-import java.util.ArrayList;
 
 public class GraphicPanel extends JPanel{
     
-    final int radius = 25;// radius of the node
+    final int RADIUS = 25;// radius of the node
     private Graph graph;
 
     //set the graph object only once so when repaint the method don't reset all the data
@@ -13,18 +11,20 @@ public class GraphicPanel extends JPanel{
         this.graph = graph;// set the graph object
     }
 
-    //This method will draw the node on the canvas using the x and y coordinates
+    //This method will draw the node on the canvas by passing the node and its number
     public void drawNode(Graphics2D g2d, Nodes node, int number){
         int x = node.locationX();// get the x coordinate of the node
         int y = node.locationY();// get the y coordinate of the node
         g2d.setColor(node.getColor());// set the color of the node
-        g2d.fillOval(x-radius, y-radius, radius*2, radius*2);//draw the node
+        g2d.fillOval(x-RADIUS, y-RADIUS, RADIUS*2, RADIUS*2);//draw the node
+        //draw outline ring around the node
         g2d.setColor(node.getOutline());
         g2d.setStroke(new BasicStroke(3));
-        g2d.drawOval(x-radius, y-radius, radius*2, radius*2);
+        g2d.drawOval(x-RADIUS, y-RADIUS, RADIUS*2, RADIUS*2);
         // draw the number inside the node
         g2d.setColor(new Color(255, 255, 255));
         g2d.setFont(new Font("Arial", Font.BOLD, 14));// set the font of the number inside the node
+        //If node number is two digits chage to offset si they are in the middle of the node
         if(number < 10){
             g2d.drawString(number+"", x-4, y+5);// draw the number inside the node)
         } else{
@@ -32,12 +32,14 @@ public class GraphicPanel extends JPanel{
         }
 
     }
-
+    //This method will draw edegs on to canvas by giving egde object
     public void drawEdge(Edges edge, Graphics2D g2d){
         Nodes startNode = edge.getStartNode();// get the start node of the edge
         Nodes endNode = edge.getEndNode();// get the end node of the edge
+        //start coordinate
         int xStart = startNode.locationX();
         int yStart = startNode.locationY();
+        //end coordinate
         int xEnd = endNode.locationX();
         int yEnd = endNode.locationY();
         g2d.setColor(edge.getColor());// set the color of the edge
@@ -57,7 +59,7 @@ public class GraphicPanel extends JPanel{
         g2d.setFont(new Font("Arial", Font.BOLD, 16));// set the font for the edge weight
         g2d.drawString(weight+"",(xStart + xEnd)/2, (yStart + yEnd)/2);// draw the weight of the edge in the middle of the line
     }
-
+    //This method will paint(draws) all the nodes and edges onto the canvas
     public void paintComponent(Graphics g){
         super.paintComponent(g);// call the paint method to paint
         Graphics2D g2d = (Graphics2D) g;// cast the graphics to Graphics2D
@@ -87,10 +89,9 @@ public class GraphicPanel extends JPanel{
         }
 
     }
-
+    //Constructor, set the canvas background.
     public GraphicPanel(){
         setBackground(new Color(152, 163, 170));// set the background color of the panel
      }
-
 
 }

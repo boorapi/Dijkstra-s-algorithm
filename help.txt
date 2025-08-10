@@ -23,11 +23,9 @@ How to Run the Simulation
 Color Guide
 ------------------------------------------------------------
 - Blue nodes & white edges: Default state before running the algorithm.
-- Yellow nodes & yellow edges: Nodes and edges currently being processed.
-- Red nodes & red edges: The shortest path between the source and destination.
-- Green node: Selected source node.
-- Orange node: Selected destination node.
-- Gray edges: Edges not used in the final shortest path.
+- White edges: Untouched — paths not worth exploring (never added to queue).
+- Red nodes & edges: Paths being considered or processed by the algorithm (added to priority queue).
+- Green nodes & edges: The final shortest path from source to destination after algorithm completion.
 
 ------------------------------------------------------------
 File Menu

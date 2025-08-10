@@ -1,138 +1,169 @@
-
 /**
- * Write a description of class Load_flie here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * The Graph class is responsible for loading and storing graph data from a file.
+ * It maintains lists and maps of nodes and edges for easy access during graph operations.
+ * This class supports resetting all stored data so a new graph can be loaded. 
  */
+
 import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-public class Graph{
-    private ArrayList<String> nodesArray = new ArrayList<String>();// to store node name and location
-    private ArrayList<String> edgesArray = new ArrayList<String>();// to store edges infomation
-    
-    private int nodesAmount;//amout of all the nodes from the file
-    private int edgesAmount;//amout of all the adges from the file
-    
-    private ArrayList<String> nodesName = new ArrayList<String>();// to store names of the nodes
-    
-    private ArrayList<Nodes> nodesList = new ArrayList<Nodes>();// to store all the nodes objects
-    private ArrayList<Edges> edgesList = new ArrayList<Edges>();// to store all the edges objects
-    // to store nodes with their names as keys (easier and faster to access nodes by their names)
+
+public class Graph {
+    // Stores raw node data from file before creating node objects
+    private ArrayList<String> nodesArray = new ArrayList<String>();
+    // Stores raw edge data from file before creating edge objects
+    private ArrayList<String> edgesArray = new ArrayList<String>();
+
+    // Number of nodes and edges in the graph
+    private int nodesAmount;
+    private int edgesAmount;
+
+    // Stores names of all nodes for easy access
+    private ArrayList<String> nodesName = new ArrayList<String>();
+
+    // List of all node objects in the graph
+    private ArrayList<Nodes> nodesList = new ArrayList<Nodes>();
+    // List of all edge objects in the graph
+    private ArrayList<Edges> edgesList = new ArrayList<Edges>();
+
+    // Map of node names to their corresponding node objects
     private HashMap<String, Nodes> nodesMap = new HashMap<String, Nodes>();
+    // Map of edge identifiers to their corresponding edge objects
     private HashMap<String, Edges> edgesMap = new HashMap<String, Edges>();
 
+    // Name of the file containing graph data
     String fileName;
-    public String load_data(){
-        File dataFile = new File(fileName); // create new file object called data file.
-        try{
-            Scanner readFile = new Scanner(dataFile);// use Scanner to read the data file
+
+
+     //Loads graph data from the file set in fileName.
+     //Creates node and edge objects and stores them in lists and maps.
+     //return Empty string if successful, or error message if file not found or invalid data.
+    public String load_data() {
+        File dataFile = new File(fileName); // Create new File object for the data file.
+        try {
+            Scanner readFile = new Scanner(dataFile); // Use Scanner to read the file
+
+            // Read number of nodes
             String x = readFile.nextLine();
-            this.nodesAmount = Integer.parseInt(x);  
-            //get nodes info          
-            for(int i=0; i<nodesAmount; i++){
+            this.nodesAmount = Integer.parseInt(x);
+
+            // Read node information
+            for (int i = 0; i < nodesAmount; i++) {
                 nodesArray.add(readFile.nextLine());
             }
-            //get edges info
+
+            // Read number of edges
             String y = readFile.nextLine();
             this.edgesAmount = Integer.parseInt(y);
-            for(int i=0; i<edgesAmount; i++){
+
+            // Read edge information
+            for (int i = 0; i < edgesAmount; i++) {
                 edgesArray.add(readFile.nextLine());
             }
+
             readFile.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return "File not found";
         }
 
-        //add nodes' name and location to their own ArrayList
-        for(String node : nodesArray){
-            String[] value = node.split(",");
-            String name = value[0];
+        // Create node objects and store in lists/maps
+        for (String node : nodesArray) {
+            String[] value = node.split(",");//Split by ","
+            String name = value[0];//first element is name
             nodesName.add(name);
-
+            //create the object
             Nodes nodeObject = new Nodes(Integer.parseInt(value[1]), Integer.parseInt(value[2]), value[0]);
-            nodesList.add(nodeObject);// add the node to the nodesList
-            nodesMap.put(value[0], nodeObject);// add the node to the nodesMap with its name as a key
+            nodesList.add(nodeObject);
+            //add to hashmap.Use name as key
+            nodesMap.put(value[0], nodeObject);
         }
 
-        
-        //add links to the nodes and create edges
-        for(String edge : edgesArray){
-            String[] value = edge.split(",");
+        // Create edge objects and link nodes
+        for (String edge : edgesArray) {
+            String[] value = edge.split(",");//split echa value by ","
             String fromNodeName = value[0];
             String toNodeName = value[1];
-            Nodes fromNode = nodesMap.get(fromNodeName);// get the node object by its name
-            Nodes toNode = nodesMap.get(toNodeName);// get the node object by its name 
-            int weight = Integer.parseInt(value[2]);// get the weight of the edge
-            if(weight<0){
+            //get nodes from and node to from hashmap
+            Nodes fromNode = nodesMap.get(fromNodeName);
+            Nodes toNode = nodesMap.get(toNodeName);
+            int weight = Integer.parseInt(value[2]);
+
+            // Check for invalid weight
+            if (weight < 0) {
                 return "Weight less then 0";
             }
-            Edges edgeForward = new Edges(fromNode, toNode, weight);// create a new edge object
-            edgesMap.put(fromNodeName + "-" + toNodeName, edgeForward);// add the edge to the edgesMap with its name as a key
-            edgesMap.put(toNodeName + "-" + fromNodeName, edgeForward);//same object under different key for undirected graph
-            edgesList.add(edgeForward);//edges list olny contains edges in one direction
-            //if both nodes exist, create an edge and add it to the nodes   
-            if(fromNode != null && toNode != null){
-                fromNode.addLink(toNode, weight);// add link to the node 
-                toNode.addLink(fromNode, weight);// add link to the node in the opposite direction 
+
+            // Create edge object
+            Edges edgeForward = new Edges(fromNode, toNode, weight);
+
+            // Add edge to map (both directions)
+            edgesMap.put(fromNodeName + "-" + toNodeName, edgeForward);
+            edgesMap.put(toNodeName + "-" + fromNodeName, edgeForward);
+
+            // Add edge to list (only one direction stored in list)
+            edgesList.add(edgeForward);
+
+            // Add egdes to Like list in both directions
+            if (fromNode != null && toNode != null) {
+                fromNode.addLink(toNode, weight);
+                toNode.addLink(fromNode, weight);
             }
         }
 
         return "";
     }
 
-    public int nodesAmount(){
+    // Getters for graph data
+    public int nodesAmount() {
         return nodesAmount;
     }
-
-    public int edgesAmount(){
+    //getters for egdes amount
+    public int edgesAmount() {
         return edgesAmount;
     }
-    
-    public ArrayList<Nodes> getNodesList(){
+    //Getters for nodesList
+    public ArrayList<Nodes> getNodesList() {
         return nodesList;
     }
-
-    public ArrayList<Edges> getEdgesList(){
+    //Getter for edgesList
+    public ArrayList<Edges> getEdgesList() {
         return edgesList;
     }
-
-    public HashMap<String, Nodes> getNodesMap(){
+    //Getters for NodesMap
+    public HashMap<String, Nodes> getNodesMap() {
         return nodesMap;
     }
-
-    public HashMap<String, Edges> getEdgesMap(){
+    //Getter for edgesMap
+    public HashMap<String, Edges> getEdgesMap() {
         return edgesMap;
     }
-    
-    public void setFileName(String fileName){
+    //Set file name (when openning new file)
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
-
-    public String getFileName(){
+    //Getters for file name
+    public String getFileName() {
         return fileName;
     }
 
-    //method to clear everything for new graph
-    public void reset(){
-    // Clear all ArrayLists
-    nodesArray.clear();
-    edgesArray.clear();
-    nodesName.clear();
-    nodesList.clear();
-    edgesList.clear();
+    //Clears all lists, maps, and counters so a new graph can be loaded.
+    public void reset() {
+        // Clear all ArrayLists
+        nodesArray.clear();
+        edgesArray.clear();
+        nodesName.clear();
+        nodesList.clear();
+        edgesList.clear();
 
-    // Clear all HashMaps
-    nodesMap.clear();
-    edgesMap.clear();
+        // Clear all HashMaps
+        nodesMap.clear();
+        edgesMap.clear();
 
-    // Optionally reset counters
-    nodesAmount = 0;
-    edgesAmount = 0;
+        // Reset counters
+        nodesAmount = 0;
+        edgesAmount = 0;
     }
-
 }

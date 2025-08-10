@@ -1,9 +1,7 @@
 
 /**
- * Write a description of class GUI here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * GUI class to create the main user interface for Dijkstra's algorithm simulation.
+ * Handles menu setup, user interactions, file loading, and starting/resetting simulation.
  */
 import javax.swing.*;
 import java.awt.*;
@@ -13,8 +11,7 @@ import java.io.FileNotFoundException;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.File;
-import java.io.FileNotFoundException;
+
 
 public class GUI extends JFrame implements ActionListener
 {
@@ -47,8 +44,8 @@ public class GUI extends JFrame implements ActionListener
     //Nodes menu items
     ArrayList<JMenuItem> nodeItems = new ArrayList<JMenuItem>();// to store all the nodes menu items
 
-    int width = 1600;// width of the window/jframe
-    int height = 900;// height of the window/jframe
+    final int WIDTH = 1600;// width of the window/jframe
+    final int HEIGHT = 900;// height of the window/jframe
 
     GraphicPanel myGraphic;
     Algorithym algorithym;
@@ -57,98 +54,102 @@ public class GUI extends JFrame implements ActionListener
     Nodes destinationNode = null;// to store the destination node
     boolean hasRun = false;// to check if the algorithm has been run
 
+    //This constructor method will setup defualt window with default simulation
     public GUI(){
-        setTitle("Dijkstra's Algorithm");
-        setupWindow();
-        setupGraph(true);
-        setupMenu();
+        setTitle("Dijkstra's Algorithm");// Set window title
+        setupWindow();// Setup frame and graphic panel
+        setupGraph(true);// Load initial graph from default file
+        setupMenu();// Setup menu bar and items
         this.pack();
-        this.setVisible(true);
+        this.setVisible(true);// Make the window visible
     }
-
-
+    // Handles menu and button actions
     public void actionPerformed(ActionEvent e){
         String cmd = e.getActionCommand();
         if(cmd.equals("help")){ 
-            createDialogBoxFromFile("help.txt", false);
+            createDialogBoxFromFile("help.txt", false);// Show help dialog
         }
         else if(cmd.equals("exit")){
-            System.exit(0);
+            System.exit(0);//Exit the simulation
         }
         else if(cmd.equals("Start")||cmd.equals("Reset")){
-            Simulation(cmd);
+            Simulation(cmd);// Start or reset simulation
         }
         else if(cmd.equals("Open")){
-            open();
+            open();// Open new simulation file
             sourceNode = null;
             destinationNode = null;
         }
         else if(cmd.equals("Save" )){
+            //Check if the user has run the algorithm
             if(hasRun){
                 algorithym.writeToFile(sourceNode, destinationNode);// write the data to a file
             }
-            else{
+            else{//if the algorithm has not been run yet. Tell user they have to run the algorithm first
                 JOptionPane.showMessageDialog(this, "Please run the simulation first!");
             }
         }
+        //Tell user add edge and add node is unavailable
         else if(cmd.equals("Add Edge")||cmd.equals("Add Node")){
-            JOptionPane.showMessageDialog(this, "This opption is currently unavaililable sorry\n To find out how to add nodes or edges please see more in help menu");
+            JOptionPane.showMessageDialog(this, "This opption is currently unavailable sorry\n"+
+            " To find out how to add nodes or edges please see more in help menu");
         }
-        else if(isInterger(cmd)){//If cmd is integer, it means the user is trying to select a destination node
+        // If cmd is integer, treat as selecting destination node
+        else if(isInterger(cmd)){
             setDestination(cmd);
         }
-        else{
+        else{ // Otherwise, treat as selecting source node
             setSource(cmd);
         }
 
     }
-
+    // Helper method to check if string can be parsed as integer
     public boolean isInterger(String str){
         try {
             Integer.parseInt(str);
             return true; // if the string can be parsed to an integer, return true
         } catch (NumberFormatException e) {
-            return false; // if it can't be parsed, return false
+            return false; // if it can't be parsed, return false (not integer)
         }
     }
 
-    //This method will create dialog box 
-    //it will take in the text that will be printed out in the box
-    //and boolean to see if the box can be edit (add text)
+    // Creates a dialog box showing content of a file (e.g., help file)
+    // 'edit' parameter specifies if text area should be editable
     public void createDialogBoxFromFile(String filePath, boolean edit){
         JDialog box = new JDialog(this);
-        box.setBounds(750, 380, 600, 400);
+        box.setBounds(750, 380, 600, 400); // Set dialog size and position
         TextArea area = new TextArea();
 
         try {
             File file = new File(filePath);
             Scanner scanner = new Scanner(file);
             StringBuilder content = new StringBuilder();
+            //Write text from file to the panel
             while (scanner.hasNextLine()) {
                 content.append(scanner.nextLine()).append("\n");
             }
-            area.setText(content.toString());
+            area.setText(content.toString()); // Set text from file
             scanner.close();
         } catch (FileNotFoundException e) {
-            area.setText("Help file not found: " + filePath);
+            area.setText("Help file not found: " + filePath);//If file not found
         }
 
-        area.setEditable(edit);
+        area.setEditable(edit); // Set if editable or not
         box.add(area);
         box.toFront();
         box.setVisible(true);
-        box.setTitle("How does it work?");
+        box.setTitle("How does it work?");//set title 
     }
-
+    // Setup the JFrame properties and add the GraphicPanel
     private void setupWindow(){
         setTitle("Dijkstra's Algorithm");// set the title of the window
-        this.getContentPane().setPreferredSize(new Dimension(width, height));//Set the lenght and width of the window
+        this.getContentPane().setPreferredSize(new Dimension(WIDTH, HEIGHT));//Set the lenght and width of the window
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);//Exit when close the window
 
         this.myGraphic = new GraphicPanel();//Create a new graphic panel
         this.getContentPane().add(this.myGraphic, BorderLayout.CENTER);//Add the graphic panel to the center of the window
     }
-
+     // Setup menu bar and ALL menus and menu items with action listeners
     private void setupMenu(){
         //setup menu bar
         menuBar = new JMenuBar();
@@ -192,14 +193,14 @@ public class GUI extends JFrame implements ActionListener
         menuBar.add(fileMenu);
 
 
-        //menu and menu and menu items for Nodes menu
+        // Nodes menu with Source and Destination submenus
         JMenu nodesMenu = new JMenu("Nodes");
         menuBar.add(nodesMenu);
         JMenu sourceNodesMenu = new JMenu("Source Nodes");
         nodesMenu.add(sourceNodesMenu);// add the source nodes menu to the nodes menu
         JMenu destinationNodesMenu = new JMenu("Destination");
         nodesMenu.add(destinationNodesMenu);// add the destination nodes menu to the nodes menu
-        
+        // Add all nodes as menu items for source nodes selection by looping through all the node
         int i = 1;
         for(Nodes name:graph.getNodesList()){
             JMenuItem item = new JMenuItem(name.getName() + "    " + i);
@@ -210,16 +211,19 @@ public class GUI extends JFrame implements ActionListener
             nodeItems.add(item);// add the item to the list of nodes so it can be accessed later (class variable)
             i++;
         }
+        // Add all graph nodes as menu items for destination nodes selection
         int j = 1;
         for(Nodes name:graph.getNodesList()){
             JMenuItem item = new JMenuItem(name.getName() + "    " + j);
-            item.setActionCommand(""+j);// set the action command to the name of the node
+            item.setActionCommand(""+j);// set the action command to the number represent the destination node
             item.setToolTipText("Click to select this node as a destination node");// set the tooltip text
             item.addActionListener(this);//Link item to action listener
             destinationNodesMenu.add(item);// add the same item to the destination nodes menu
             //nodeItems.add(item);// add the item to the list of nodes so it can be accessed later (class variable)
             j++;
         }
+        //create add node and add edge menu
+        //Will be use in the future (Currently doing nothing)
         JMenuItem addNodesItem = new JMenuItem("Add Node");
         addNodesItem.setActionCommand("Add Node");  
         addNodesItem.addActionListener(this);//Link item to action listener
@@ -230,89 +234,115 @@ public class GUI extends JFrame implements ActionListener
         nodesMenu.add(addEdgeItem);// add the item to the nodes menu
 
     }
-
+    // Starts or resets the simulation depending on the cmd argument
+    //The method will also check the source and destination node are selected.
     private void Simulation(String cmd){
         if(cmd.equals("Start")){
             if(sourceNode == null && destinationNode == null){
                     // show message dialog if no source node and destination node is selected using JOptionPane
                     JOptionPane.showMessageDialog(this, "Please select a source and destination node!");
-                }
-                else if(sourceNode == null){
+            }
+            else if(sourceNode == null){
                     // show message dialog if no source node is selected using JOptionPane
                     JOptionPane.showMessageDialog(this, "Please select a source node!");
-                }
-                else if(destinationNode == null){
+            }
+            else if(destinationNode == null){
                     JOptionPane.showMessageDialog(this, "Please select a destination node!");
-                }
-                //This is where the magic happens
-                else{
-                    // run Dijkstra's algorithm with the source node and the graph
-                    Thread dijkstraThread = new Thread(() -> {
-                    algorithym.runDijkstra(sourceNode, destinationNode, graph, 700);  // 200 ms sleep for visualization
-                    hasRun = true; // set hasRun to true after the algorithm has been run
-                    });
-                    dijkstraThread.start(); // start the thread to run the algorithm
+            }
+            //This is where the magic happens
+            else{
+                // run Dijkstra's algorithm with the source node and the graph on new thread
+                Thread dijkstraThread = new Thread(() -> {
+                algorithym.runDijkstra(sourceNode, destinationNode, graph, 400);  // 400 ms sleep for visualization
+                hasRun = true; // set hasRun to true after the algorithm has been run
+                });
+                dijkstraThread.start(); // start the thread to run the algorithm
             }
         }
-        else{
+        else{//reset simulation
             algorithym.reset(graph);
             sourceNode = null;
             destinationNode = null;
         }
     }
+    // Set the source node based on command string (node name)
+    private void setSource(String cmd) {
+    Nodes selectedNode = graph.getNodesMap().get(cmd);
 
-    private void setSource(String cmd){
-        Nodes selectedNode = graph.getNodesMap().get(cmd);
-            if (sourceNode != null && sourceNode != selectedNode) {
-                sourceNode.setColorStatus("default");// reset the color of the previous node to default
-            }
-            selectedNode.setColorStatus("source");
-            sourceNode = selectedNode;
-            myGraphic.repaint();
-    }
+        // Prevent selecting the destination node as source
+        if (selectedNode == destinationNode) {
+            JOptionPane.showMessageDialog(this, "This node is already selected as the destination!");
+            return;
+        }
+        //IF the user reselect node
+        if (sourceNode != null && sourceNode != selectedNode) {
+            sourceNode.setColorStatus("default");// Reset old source node color
+        }
 
-    private void setDestination(String cmd){
-        int index = Integer.parseInt(cmd) - 1;// convert the string to an integer and subtract 1 to get the index
-            Nodes destination = graph.getNodesList().get(index);// get the node from the list using the index
-            if(destinationNode != null && destinationNode != destination){
-                destinationNode.setColorStatus("default");// reset the color of the previous node to default
-            }
-            destination.setColorStatus("destination");// change the color of the selected node
-            destinationNode = destination;// set the destination node to the selected node
-            myGraphic.repaint();// repaint the graphic panel to show the changes
+        selectedNode.setColorStatus("source");// Highlight new source node
+        sourceNode = selectedNode;
+        myGraphic.repaint();
     }
-    
+    // Set the destination node based on command
+    private void setDestination(String cmd) {
+        int index = Integer.parseInt(cmd) - 1;
+        Nodes destination = graph.getNodesList().get(index);
+
+        // Prevent selecting the source node as destination
+        if (destination == sourceNode) {
+            JOptionPane.showMessageDialog(this, "This node is already selected as the source!");
+            return;
+        }
+        //If the user reselect node
+        if (destinationNode != null && destinationNode != destination) {
+            destinationNode.setColorStatus("default");// Reset old destination node color
+        }
+
+        destination.setColorStatus("destination");// Highlight new destination node
+        destinationNode = destination;
+        myGraphic.repaint();
+    }
+    // Loads the graph from a file (default or user-specified)
     private void setupGraph(boolean initialSetUp) {
     String name;
 
     if (initialSetUp) {
-        name = "simulation_data.csv";
+        name = "simulation_data.csv";// default simulation data file
     } else {
-        name = JOptionPane.showInputDialog(null, "Enter file name:");
+        name = JOptionPane.showInputDialog(null, "Enter file name:");// ask user for file name
     }
     String previousFile = graph.getFileName();
-    graph.reset(); // clear any old data BEFORE loading
+    graph.reset(); // clear any old data before loading
 
-    graph.setFileName(name);
-    if (graph.load_data().equals("File not found")) {
-        JOptionPane.showMessageDialog(this, 
-            "File not found. Please check if the file you wish to\n" +
-            "open is in the same directory and retry.");
+    graph.setFileName(name);//set file name to load from
+    String status = graph.load_data();//cast loading status to string
+    //if somthing wrong
+    if (!status.equals("")){
+        //print out whats wrong
+        if(status.equals("File not found")){
+            JOptionPane.showMessageDialog(this, 
+                "File not found. Please check if the file you wish to\n" +
+                "open is in the same directory and retry.");
+        }else if(status.equals("Weight less then 0")){
+            JOptionPane.showMessageDialog(this, "File error, weight can not be negative amount.");
+        }
+        //revert to old file
+        graph.reset();
         graph.setFileName(previousFile);
         graph.load_data();
         return; // don't continue if load failed
     }
 
-    myGraphic.setGraph(graph);       // attach the loaded graph
+    myGraphic.setGraph(graph);// attach the loaded graph
     algorithym = new Algorithym(myGraphic); // create new algorithm object
     }
-
+    // Opens new simulation file and resets menus/graphics
     private void open() {
-        setupGraph(false);
-        menuBar.removeAll();
+        setupGraph(false);// load userselected graph
+        menuBar.removeAll();// clear current menu bar items
         menuBar.revalidate();
         menuBar.repaint();
-        setupMenu();
+        setupMenu();// rebuild menus
         myGraphic.repaint();
     
     }        
