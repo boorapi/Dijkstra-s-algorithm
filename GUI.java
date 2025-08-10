@@ -46,6 +46,7 @@ public class GUI extends JFrame implements ActionListener
 
     final int WIDTH = 1600;// width of the window/jframe
     final int HEIGHT = 900;// height of the window/jframe
+    final int SIMULATION_SPEED = 400;
 
     GraphicPanel myGraphic;
     Algorithm algorithm;
@@ -254,7 +255,7 @@ public class GUI extends JFrame implements ActionListener
             else{
                 // run Dijkstra's algorithm with the source node and the graph on new thread
                 Thread dijkstraThread = new Thread(() -> {
-                algorithm.runDijkstra(sourceNode, destinationNode, graph, 400);  // 400 ms sleep for visualization
+                algorithm.runDijkstra(sourceNode, destinationNode, graph, SIMULATION_SPEED);  // 400 ms sleep for visualization
                 hasRun = true; // set hasRun to true after the algorithm has been run
                 });
                 dijkstraThread.start(); // start the thread to run the algorithm

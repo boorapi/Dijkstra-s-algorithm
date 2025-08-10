@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Mian
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Mian\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\r\n\ The\ main\ class\ to\ start\ the\ Dijkstra's\ Algorithm\ .\r\n\ It\ creates\ an\ instance\ of\ the\ GUI\ class\ and\ displays\ the\ window.\r\n
 comment1.params=args
 comment1.target=void\ main(java.lang.String[])
 numComments=2
