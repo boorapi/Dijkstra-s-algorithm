@@ -1,7 +1,5 @@
-***Shortest path from Redwood to Riverside***
-This is the path: Redwood -> Brookside -> Fairview -> Greendale -> Riverside
-The cost of the path is: 670
-
+***Shortest path from Redwood to Sunnyvale***
+Path not found.
 
 
 ***These are paths from source node to all other nodes***
@@ -30,8 +28,8 @@ Path: Redwood -> Brookside -> Lakeside
 From Redwood to Greendale: 490
 Path: Redwood -> Brookside -> Fairview -> Greendale
 
-From Redwood to Sunnyvale: 680
-Path: Redwood -> Brookside -> Fairview -> Greendale -> Sunnyvale
+From Redwood to Sunnyvale: 
+Path not found.
 
 From Redwood to Maplewood: 480
 Path: Redwood -> Brookside -> Lakeside -> Maplewood

@@ -141,27 +141,38 @@ public class Algorithm extends Thread{
 
             // Write main shortest path to the file
             writer.write("***Shortest path from " + source.getName() + " to " + destination.getName() + "***\n");
-            writer.write("This is the path: ");
             ArrayList<Nodes> path = backtrack(source, destination);
-            for (int i = path.size() - 1; i >= 0; i--) {
-                writer.write(path.get(i).getName());
-                if (i != 0) {
-                    writer.write(" -> ");
+            //if the cost is max value, this means there is no path to that node
+            if(destination.getCost() == Integer.MAX_VALUE){
+                writer.write("Path not found.\n\n\n");
+            }else{//else write the path
+                writer.write("This is the path: ");
+                for (int i = path.size() - 1; i >= 0; i--) {
+                    writer.write(path.get(i).getName());
+                    if (i != 0) {
+                        writer.write(" -> ");
+                    }
                 }
+                writer.write("\nThe cost of the path is: " + destination.getCost() + "\n\n\n");
             }
-            writer.write("\nThe cost of the path is: " + destination.getCost() + "\n\n\n");
-
             // Write all paths from source to every other node to file
             writer.write("***These are paths from source node to all other nodes***\n");
             for (Nodes node : nodesList) {
                 if (node != source) {
-                    writer.write("From " + source.getName() + " to " + node.getName() + ": " + node.getCost() + "\n");
-                    ArrayList<Nodes> backtrackPath = backtrack(source, node);
-                    writer.write("Path: ");
-                    for (int i = backtrackPath.size() - 1; i >= 0; i--) {
-                        writer.write(backtrackPath.get(i).getName());
-                        if (i != 0) {
-                            writer.write(" -> ");
+                    writer.write("From " + source.getName() + " to " + node.getName() + ": ");
+                    //if there is no path to the node
+                    if(node.getCost() == Integer.MAX_VALUE){
+                        writer.write("\nPath not found.");
+                    }else{//else write the path
+                        writer.write(""+node.getCost()+"\n");
+                        //get arraylist of nodes by usingg backtrack method
+                        ArrayList<Nodes> backtrackPath = backtrack(source, node);
+                        writer.write("Path: ");
+                        for (int i = backtrackPath.size() - 1; i >= 0; i--) {
+                            writer.write(backtrackPath.get(i).getName());
+                            if (i != 0) {
+                                writer.write(" -> ");
+                            }
                         }
                     }
                     writer.write("\n");

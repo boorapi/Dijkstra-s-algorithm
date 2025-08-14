@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=GraphicPanel
+comment1.params=graph
+comment1.target=void\ setGraph(Graph)
+comment2.params=g2d\ node\ number
+comment2.target=void\ drawNode(java.awt.Graphics2D,\ Nodes,\ int)
+comment3.params=edge\ g2d
+comment3.target=void\ drawEdge(Edges,\ java.awt.Graphics2D)
+comment4.params=g2d\ weight\ start\ end
+comment4.target=void\ drawWeight(java.awt.Graphics2D,\ int,\ Nodes,\ Nodes)
+comment5.params=g
+comment5.target=void\ paintComponent(java.awt.Graphics)
+comment6.params=
+comment6.target=GraphicPanel()
+numComments=7

@@ -11,8 +11,8 @@ Path: WellingtonCity -> Porirua
 From WellingtonCity to Petone: 100
 Path: WellingtonCity -> Petone
 
-From WellingtonCity to Eastbourne: 200
-Path: WellingtonCity -> Petone -> Eastbourne
+From WellingtonCity to Eastbourne: 
+Path not found.
 
 From WellingtonCity to Upper Hutt: 250
 Path: WellingtonCity -> Petone -> Upper Hutt

@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Edges
+comment1.params=start\ end\ weight
+comment1.target=Edges(Nodes,\ Nodes,\ int)
+comment2.params=
+comment2.target=Nodes\ getStartNode()
+comment3.params=
+comment3.target=Nodes\ getEndNode()
+comment4.params=
+comment4.target=int\ getWeight()
+comment5.params=
+comment5.target=java.awt.Color\ getColor()
+comment6.params=status
+comment6.target=void\ setColorStatus(java.lang.String)
+numComments=7
